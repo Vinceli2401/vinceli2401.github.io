@@ -341,11 +341,11 @@
   
   
   <entry>
-    <title>Untitled Post - 2</title>
-    <link href="/2021/11/08/197/"/>
-    <url>/2021/11/08/197/</url>
+    <title>Untitled Post - 1</title>
+    <link href="/2021/11/08/195/"/>
+    <url>/2021/11/08/195/</url>
     
-    <content type="html"><![CDATA[<p>This category contains some basic principles of artificial learning and some models I have constructed for fun</p>]]></content>
+    <content type="html"><![CDATA[<p>This category contains the basic theory of internet, the protocols to set up your website using a domain and a server, and how to design your website using HTML&#x2F;CSS&#x2F;JS.</p>]]></content>
     
     
     <categories>
@@ -360,11 +360,11 @@
   
   
   <entry>
-    <title>Untitled Post - 1</title>
-    <link href="/2021/11/08/195/"/>
-    <url>/2021/11/08/195/</url>
+    <title>Untitled Post - 2</title>
+    <link href="/2021/11/08/197/"/>
+    <url>/2021/11/08/197/</url>
     
-    <content type="html"><![CDATA[<p>This category contains the basic theory of internet, the protocols to set up your website using a domain and a server, and how to design your website using HTML&#x2F;CSS&#x2F;JS.</p>]]></content>
+    <content type="html"><![CDATA[<p>This category contains some basic principles of artificial learning and some models I have constructed for fun</p>]]></content>
     
     
     <categories>
@@ -436,9 +436,9 @@
   
   
   <entry>
-    <title>Default Login</title>
-    <link href="/2021/11/07/default-login/"/>
-    <url>/2021/11/07/default-login/</url>
+    <title>Default Profile</title>
+    <link href="/2021/11/07/default-profile/"/>
+    <url>/2021/11/07/default-profile/</url>
     
     <content type="html"><![CDATA[]]></content>
     
@@ -474,9 +474,9 @@
   
   
   <entry>
-    <title>Default Profile</title>
-    <link href="/2021/11/07/default-profile/"/>
-    <url>/2021/11/07/default-profile/</url>
+    <title>Default Login</title>
+    <link href="/2021/11/07/default-login/"/>
+    <url>/2021/11/07/default-login/</url>
     
     <content type="html"><![CDATA[]]></content>
     
