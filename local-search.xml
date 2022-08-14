@@ -42,5 +42,741 @@
   
   
   
+  <entry>
+    <title>Vince&#39;s Kaggle Notes (Updating...)</title>
+    <link href="/2022/07/06/kaggle-notes/"/>
+    <url>/2022/07/06/kaggle-notes/</url>
+    
+    <content type="html"><![CDATA[<h2 id="Decision-Tree-Regressor"><a href="#Decision-Tree-Regressor" class="headerlink" title="Decision Tree Regressor"></a>Decision Tree Regressor</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd<br><span class="hljs-keyword">from</span> sklearn.metrics <span class="hljs-keyword">import</span> mean_absolute_error <span class="hljs-comment">#mae</span><br><span class="hljs-keyword">from</span> sklearn.model_selection <span class="hljs-keyword">import</span> train_test_split <span class="hljs-comment">#spliting data sets</span><br><span class="hljs-keyword">from</span> sklearn.tree <span class="hljs-keyword">import</span> DecisionTreeRegressor<br><br>iowa_file_path = <span class="hljs-string">&#x27;...&#x27;</span><br><br>home_data = pd.read_csv(iowa_file_path)<br>y = home_data.SalePrice<br>features = [<span class="hljs-string">&#x27;LotArea&#x27;</span>, <span class="hljs-string">&#x27;YearBuilt&#x27;</span>, <span class="hljs-string">&#x27;1stFlrSF&#x27;</span>, <span class="hljs-string">&#x27;2ndFlrSF&#x27;</span>, <span class="hljs-string">&#x27;FullBath&#x27;</span>, <span class="hljs-string">&#x27;BedroomAbvGr&#x27;</span>, <span class="hljs-string">&#x27;TotRmsAbvGrd&#x27;</span>]<br>X = home_data[features] <span class="hljs-comment">#build X from selected features from the data set</span><br><br>train_X, val_X, train_y, val_y = train_test_split(X, y, random_state=<span class="hljs-number">1</span>)<br><br>iowa_model = DecisionTreeRegressor(random_state=<span class="hljs-number">1</span>) <span class="hljs-comment">#same results</span><br>iowa_model.fit(train_X, train_y)<br><br>val_predictions = iowa_model.predict(val_X)<br>val_mae = mean_absolute_error(val_predictions, val_y)<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_mae</span>(<span class="hljs-params">max_leaf_nodes, train_X, val_X, train_y, val_y</span>):<br>    model = DecisionTreeRegressor(max_leaf_nodes=max_leaf_nodes, random_state=<span class="hljs-number">0</span>)<br>    model.fit(train_X, train_y)<br>    preds_val = model.predict(val_X)<br>    mae = mean_absolute_error(val_y, preds_val)<br>    <span class="hljs-keyword">return</span>(mae)<br></code></pre></td></tr></table></figure><h2 id="Random-Forest-Regressor"><a href="#Random-Forest-Regressor" class="headerlink" title="Random Forest Regressor"></a>Random Forest Regressor</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd<br><span class="hljs-keyword">from</span> sklearn.ensemble <span class="hljs-keyword">import</span> RandomForestRegressor<br><span class="hljs-keyword">from</span> sklearn.metrics <span class="hljs-keyword">import</span> mean_absolute_error<br><span class="hljs-keyword">from</span> sklearn.model_selection <span class="hljs-keyword">import</span> train_test_split<br><br>iowa_file_path = <span class="hljs-string">&#x27;...&#x27;</span><br>home_data = pd.read_csv(iowa_file_path)<br>y = home_data.SalePrice<br><br>features = [<span class="hljs-string">&#x27;LotArea&#x27;</span>, <span class="hljs-string">&#x27;YearBuilt&#x27;</span>, <span class="hljs-string">&#x27;1stFlrSF&#x27;</span>, <span class="hljs-string">&#x27;2ndFlrSF&#x27;</span>, <span class="hljs-string">&#x27;FullBath&#x27;</span>, <span class="hljs-string">&#x27;BedroomAbvGr&#x27;</span>, <span class="hljs-string">&#x27;TotRmsAbvGrd&#x27;</span>]<br>X = home_data[features]<br>X.head()<br><br>train_X, val_X, train_y, val_y = train_test_split(X, y, random_state=<span class="hljs-number">1</span>)<br><br><span class="hljs-comment">#I mean, it&#x27;s almost the same, right?</span><br>rf_model = RandomForestRegressor(random_state=<span class="hljs-number">1</span>)<br>rf_model.fit(train_X, train_y)<br>rf_val_predictions = rf_model.predict(val_X)<br>rf_val_mae = mean_absolute_error(rf_val_predictions, val_y)<br><br>rf_model_on_full_data = RandomForestRegressor(random_state=<span class="hljs-number">1</span>)<br>rf_model_on_full_data.fit(train_X, train_y)<br><br>test_data_path = <span class="hljs-string">&#x27;...&#x27;</span><br>test_data = pd.read_csv(test_data_path)<br>test_X = test_data[features]<br><br>test_preds = rf_model_on_full_data.predict(test_X)<br>output = pd.DataFrame(&#123;<span class="hljs-string">&#x27;Id&#x27;</span>: test_data.Id,<br>                       <span class="hljs-string">&#x27;SalePrice&#x27;</span>: test_preds&#125;)<br>output.to_csv(<span class="hljs-string">&#x27;submission.csv&#x27;</span>, index=<span class="hljs-literal">False</span>)<br></code></pre></td></tr></table></figure>]]></content>
+    
+    
+    <categories>
+      
+      <category>AI &amp;amp; Machine Learning</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Machine Learning</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Support Vector Machines (SVM)</title>
+    <link href="/2022/06/15/support-vector-machines/"/>
+    <url>/2022/06/15/support-vector-machines/</url>
+    
+    <content type="html"><![CDATA[<p>[h2title]Support Vector Machines with Logistic Regression[&#x2F;h2title] Support vector machines are a group of elegant and powerful machine learning models based on robust statistic models and frameworks. These models sometimes learn faster in non-linear functions than both logistic regression and neural networks. Unfortunately, SVMs are not used that much nowadays in the industrial world, but it is still crucial for us to examine this classic machine learning model to enrich our database. Firstly let us take a further look into our classic logistic regression cost function again, shall we? $$ \begin{aligned} J(\theta) &amp;&#x3D;\frac{1}{m} \sum_{i&#x3D;1}^{m}-y^{(i)} \log \left(h_{\theta}\left(x^{(i)}\right)\right)-\left(1-y^{(i)}\right) \log \left(1-h_{\theta}\left(x^{(i)}\right)\right) \\ &amp;&#x3D;\frac{1}{m} \sum_{i&#x3D;1}^{m}-y^{(i)} \log \left(\frac{1}{1+e^{-\theta^{T} x^{(i)}}}\right)-\left(1-y^{(i)}\right) \log \left(1-\frac{1}{1+e^{-\theta^{T} x^{(i)}}}\right) \end{aligned} $$ Here you may recall that when $y$ is 1, $h_\theta(x)$ would be approximately 1 and $\Theta^Tx$would be higher than 0. Please keep this in mind as we will again utilize these rules in our support vector machines. <a href="https://vinceli.tech/wp-content/uploads/2022/06/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20220625080809.png"><img src="https://vinceli.tech/wp-content/uploads/2022/06/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20220625080809-1024x576.png"></a>Now we need to alter the graphs by a little by modifying the logistic regression cost functions. Opposing to the curvy sigmoid functions, here we want adapt a rather straighter function to use in a support vector machine. The function here is called the Hinge Loss function <a href="https://en.wikipedia.org/wiki/Hinge_loss">(https://en.wikipedia.org/wiki/Hinge_loss)</a>. When the $\Theta^Tx$ is greater than 1, the output of this function would be the constant 0, differentiating from the original $ -\log \left(\frac{1}{1+e^{-\theta^{T} x}}\right) $(and the other one.) <a href="https://vinceli.tech/wp-content/uploads/2022/06/330px-Hinge_loss_vs_zero_one_loss.svg.png"><img src="https://vinceli.tech/wp-content/uploads/2022/06/330px-Hinge_loss_vs_zero_one_loss.svg.png"></a>You can see there is a visible similarity between this function and the original one, but this one remains constant 0 after $\Theta^Tx &gt;&#x3D; 1$, contrasting from the original one where the curve is still downwards sloping. To apply the function with clarity, we will now denote the first cost function term that corresponds to the cost when y&#x3D;1 as $cost_1(z)$. Similarly, the second term that classifies when y&#x3D;0 will be denoted as $cost_0(z)$. From here, we can extend these terms to our final cost function. We define each of them as: $$ \begin{aligned} \operatorname{cost}_{0}(z) &amp;&#x3D;\max (0, k(1+z)) \\ \operatorname{cost}_{1}(z) &amp;&#x3D;\max (0, k(1-z)) \end{aligned} $$ You may remember the $z$ component being the $\Theta^Tx$. The $k$ here is a constant that defines the gradient of the line. When $\Theta^Tx &gt;&#x3D; 1$, the function would be less than 0, hence outputting 0 as it is the max among the two terms. We’re finally there! Now let us rewrite the cost function for the support vector machines: $$ J(\theta)&#x3D;\frac{1}{m} \sum_{i&#x3D;1}^{m} y^{(i)} \operatorname{cost}_{1}\left(\theta^{T} x^{(i)}\right)+\left(1-y^{(i)}\right) \operatorname{cost}_{0}\left(\theta^{T} x^{(i)}\right)+\frac{\lambda}{2 m} \sum_{j&#x3D;1}^{n} \Theta_{j}^{2} $$ Now that is a great regularized cost function for the support vector machines. However according to certain machine learning conventions we still have to alter it a bit. Firstly we have to multiply the cost function by $m$ to remove the $1&#x2F;m$ term. This is purely visual(no) and will not affect the optimization parameters as we only alter a constant term. I.e., you may find that $(x-5)^2$ and $10*(x-5)^2$ all gives minimum cost when x is 5. Next instead of lambda we used in logistic regressions, conventionally we would use a $C$. Again the $C$ here is just simply $1&#x2F;\lambda$, the only difference here is we put this weighting directly in the first term instead of the second. After these processes, we can now finish off with our final cost function: $$ J(\theta)&#x3D; C\sum_{i&#x3D;1}^{m} y^{(i)} \operatorname{cost}_{1}\left(\theta^{T} x^{(i)}\right)+\left(1-y^{(i)}\right) \operatorname{cost}_{0}\left(\theta^{T} x^{(i)}\right)+\frac{1}{2 m} \sum_{j&#x3D;1}^{n} \Theta_{j}^{2} $$ [h2title]Essence of Support Vector Machines[&#x2F;h2title] I have to admit it was probably malpractice to list a series of mathematics formula before we dig in to the actual scenarios. My apologies. However after gaining an intuition of the SVM’s cost function, we can see how these parameters can affect the outcome of a model. As we stated before, SVM is a supervised classification algorithm(and yes, of course SVM can conduct regression models, but here we mainly discuss the classification model). Intuitively we want to feed SVM some delicious labelled data. The following graph will state the large-margin intuition of SVMs… <a href="https://vinceli.tech/wp-content/uploads/2022/06/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20220627141401.png"><img src="https://vinceli.tech/wp-content/uploads/2022/06/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20220627141401-1024x708.png"></a>Here we have two classes of data, the red crosses and the blue circles. The model is designed to produce a linearly separable boundary between the classes so new training examples can be classified correctly as a cross or a circle. Now here there are multiple lines that can be used to separate them, all with different gradients and constants. How can we actually determine which one is the most useful? Well, we would not want our model, in this case, to be a complete vertical line. This will miss out some examples and may not be so accurate. Quantitatively, what we want to achieve here is develop a linear line, whose margin(distance) to the classes is the largest. In this way, our model can better classify the examples. These classifiers can be accomplished by the following: <strong>When $y&#x3D;1$, $h_\theta(x)$ would be approximately 1 and $\Theta^Tx$would have to be higher than 1</strong> <strong>When $y&#x3D;0$, $h_\theta(x)$ would be approximately 1 and $\Theta^Tx$would have to be lower than -1</strong> Our demand for $\Theta^Tx$ has been driven up. Beforehand it only needs to suffice to be higher or lower than 0. Now as we are constructing a large margin classifier, this would have to be changed to ensure we develop quality models. Please keep this in mind! <a href="https://vinceli.tech/wp-content/uploads/2022/06/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20220627141414.png"><img src="https://vinceli.tech/wp-content/uploads/2022/06/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20220627141414-1024x476.png"></a> Now we describe how the selection of $C$ can affect our model. Now there are sadly outliers in this model. Outliers are abnormal data examples that may deviate from its own class. If we try to modify our model so it can accurately classify the outliers, you program may be in the danger of overfitting. If the model fails to comply with the outliers, you may be in the risk of underfitting. From this point of view, we can now correlate our model’s ability to accept outliers with the parameter $C$ in this model. As $C$ remains a small value, the model would try less to fit in the outliers. Whereas when $C$ is rather large, it will increase the weighting for the cost and attempts to fit the outlier correctly, even there is a cost of overfitting. [h2title]Kernels[&#x2F;h2title] <a href="https://vinceli.tech/wp-content/uploads/2022/06/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20220627212421.png"><img src="https://vinceli.tech/wp-content/uploads/2022/06/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20220627212421-1024x353.png"></a> Now, of course classification problem cannot always be that simple. We always have to be prepared to produce a non-linear boundary to predict the classes correctly. In this way we have to introduce polynomials, but sometimes even them cannot suffice for the purpose. We would require a component that can make more complex and accurate boundaries. Therefore, we introduce the kernels. Gaussian kernels are a group of similarity kernels that calculate a point’s distance to another certain point. To be a honest this is its description in unnecessary simplicity, but please bear with my dreadful descriptive writing. This function takes form of this: $$ f_{i}&#x3D;\operatorname{similarity}\left(x, l^{(i)}\right)&#x3D;\exp \left(-\frac{\left\x-l^{(i)}\right\^{2}}{2 \sigma^{2}}\right) $$ This function alone takes two inputs, the $x$ point and the $l^\left(i\right)$. The kernel would then calculate the distance of two points and process this into quantitative data. Thus we construct non-linear boundaries by selecting landmarks and applying them with the Gaussian Kernels. Intuitively, we draw the following characteristics for this function: $$\begin{aligned} f_{i}&#x3D;\operatorname{similarity}\left(x, l^{(i)}\right)&#x3D;\exp \left(-\frac{\left\x-l^{(i)}\right\^{2}}{2 \sigma^{2}}\right) &amp;\text { If } x \approx l^{(i)} , f_{i}&#x3D;\exp \left(-\frac{\approx 0^{2}}{2 \sigma^{2}}\right) \approx 1. \\ &amp;\text { If } x \text { is far from } l^{(i)}\text {, then } f_{i}&#x3D;\exp \left(-\frac{(\text { large number })^{2}}{2 \sigma^{2}}\right) \approx 0. \end{aligned}$$ The sigma($\sigma$) is another parameter of our model that can alter the general shape for our decision boundary. As derived from the mathematics formula above, if $\sigma^2$ is high, the model would under-fit, creating both high bias and low variance. Contrarily, if $\sigma^2$ remains low, the model will over-fit, leading to a rather low bias but a higher variance. You can use this calculator if you wish to: <a href="https://www.desmos.com/calculator/15ipvtr3on">https://www.desmos.com/calculator/15ipvtr3on</a> May I just quote this from the official machine learning notes, as this explains better than I do: “In other words, if $x$ and the landmark are close, then the similarity will be close to 1 , and if $x$ and the landmark are far away from each other, the similarity will be close to $0 .$ Each landmark gives us the features in our hypothesis.” By selecting the right landmarks we can construct a better model, but how should we select the landmarks effectively? Well, it turns out one way of doing this can be selecting the <strong>training examples as landmarks themselves.</strong> $$ x^{(i)} \rightarrow\left[f_{1}^{(i)}&#x3D;\operatorname{similarity}\left(x^{(i)}, l(1)\right) f_{2}^{(i)}&#x3D;\operatorname{similarity}\left(x^{(i)}, l(2)\right): f_{m}^{(i)}&#x3D;\operatorname{similarity}\left(x^{(i)}, l(m)\right)\right] $$ We now incorporate our kernels into the feature vector, which by using we could finally use the SVM minimization algorithm: $$ \min _{\theta} C \sum_{i&#x3D;1}^{m} w^{(i)} \operatorname{cost}_{1}\left(\Theta^{T} f^{(i)}\right)+\left(1-y^{(i)}\right) \operatorname{cost}_{0}\left(\theta^{T} f^{(i)}\right)+\frac{1}{2} \sum_{j&#x3D;1}^{n} \Theta_{j}^{2} $$ I would recommend doing this week’s programming homework to certify your understanding of SVMs. That being said, the newer machine learning syllabus (as I heard) has removed SVM as a topic. However these algorithms still offer valuable perspectives on our comprehension on the machine learning process, so its still better to study this concept.</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>AI &amp;amp; Machine Learning</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Machine Learning</tag>
+      
+      <tag>Classification</tag>
+      
+      <tag>Logistic Regression</tag>
+      
+      <tag>Support Vector Machines</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Zero width space, my hero</title>
+    <link href="/2022/02/04/zero-width-space/"/>
+    <url>/2022/02/04/zero-width-space/</url>
+    
+    <content type="html"><![CDATA[<p>Surely you have lived through the time tortured by Kahoot to find a funny username, and then you might have the same humor level as me, which is negative. Well, these eras have come to an end. Introducing… the zero-width space! [h2title]ZWSP[&#x2F;h2title]</p><p><strong>J​S</strong></p><p>Try to copy this word and tap backspace to delete the word. This word has two letters so we need two backspaces to delete this, right? Well if you actually try it by yourself, you may realize it actually takes three backspaces. This is because I inserted a zero-width space in between the letters, which actually cannot be seen because it’s zero-width.</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>Website Design</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Bias &amp; Variance</title>
+    <link href="/2022/02/03/bias-variance/"/>
+    <url>/2022/02/03/bias-variance/</url>
+    
+    <content type="html"><![CDATA[<p>Vincy Vince, isn’t bias and variance the same thing?</p><p><strong>No. Just no.</strong></p><p>If you have read the old article I wrote about underfitting and overfitting, then today’s concept can be pretty easy to follow. [h2title]Train, Cross-validate and Test[&#x2F;h2title] To start off with, we need to first describe the segmentation of our training examples. 60%(roughly) of your test examples are used as training examples. These examples are used to determine the values of theta in the hypothesis. 20% of the test examples will be cross-validation examples. These examples are used to decide the number of terms of the polynomial. (d as we refer it) As we all know, more terms will probably reduce the errors, but it can also lead to overfitting. The cross-validation examples are here to prevent that from happening. 20% will be the testing cases. These cases will estimate the error of the model to make sure we can reach the optimum. Now with these concepts clear, we can move on to the description of bias and variance. [h2title]Bias and variance[&#x2F;h2title]</p><p>To put this simply, high bias is the case of underfitting and high variance is overfitting.</p><p><a href="https://vinceli.tech/wp-content/uploads/2022/02/I4dRkz_pEeeHpAqQsW8qwg_bed7efdd48c13e8f75624c817fb39684_fixed.png"><img src="https://vinceli.tech/wp-content/uploads/2022/02/I4dRkz_pEeeHpAqQsW8qwg_bed7efdd48c13e8f75624c817fb39684_fixed.png"></a> This graph shows the correlation of how the degree of the polynomial(the number of terms) might affect the values of bias and variance. To be honest this is probably the easiest graph to understand throughout the entire course… As the polynomial degree increases, the cost for the training set will definitely decrease, but the cost for the cross-validation set will also increase passing the optimum value, hence the high variance. And vice versa.</p><hr><p><a href="https://vinceli.tech/wp-content/uploads/2022/02/bpAOvt9uEeaQlg5FcsXQDA_ecad653e01ee824b231ff8b5df7208d9_2-am.png"><img src="https://vinceli.tech/wp-content/uploads/2022/02/bpAOvt9uEeaQlg5FcsXQDA_ecad653e01ee824b231ff8b5df7208d9_2-am.png"></a> This graph shows how the error is impacted when the training set size is changed in a high bias circumstance. As the training set size increases, the error for the training set will gradually increase to a certain level. The error for the testing set, on the other hand, will also gradually decrease to a certain level, which is close to the error of the training set. In this circumstance, increasing the training set size will not immensely benefit the model. The error will not decrease by much after certain number of test cases. You can try to increase the degree for the polynomial to solve this problem, or perhaps you would like to decrease the lambda parameter (the learning rate, as you might have guessed) so the polynomial can fit better with the training examples.</p><hr><p><a href="https://vinceli.tech/wp-content/uploads/2022/02/vqlG7t9uEeaizBK307J26A_3e3e9f42b5e3ce9e3466a0416c4368ee_ITu3antfEeam4BLcQYZr8Q_37fe6be97e7b0740d1871ba99d4c2ed9_300px-Learning1.png"><img src="https://vinceli.tech/wp-content/uploads/2022/02/vqlG7t9uEeaizBK307J26A_3e3e9f42b5e3ce9e3466a0416c4368ee_ITu3antfEeam4BLcQYZr8Q_37fe6be97e7b0740d1871ba99d4c2ed9_300px-Learning1.png"></a> This is basically the opposite of the former graph. This graph shows how the error is impacted when the training set size is changed in a high variance circumstance. As the training set size increases, the error for the testing set will gradually decrease, but this time it will continue to decrease at a rather constant rate. The error for the training set, on the other hand, will also gradually increase at a relatively constant rate. In this circumstance, increasing the training set size will benefit the model greatly. The error will continue decreasing as training set expands. You can try to decrease the degree for the polynomial to solve this problem also, or perhaps you would like to increase the lambda parameter so the model itself is better regularized. [h2title]Regularization[&#x2F;h2title] The last thing we’re mentioning here is how to select the learning rate and the polynomial degree of a model. Sure you already have an impression on how these factors can affect a model from being inaccurate. We’re going to explain in details of how we’re supposed to test these parameters for the optimum performance. Firstly we generate a number of different values for the learning rate, etc. 0.05 and such. Secondly we generate a number of polynomials with different polynomial degrees. Now we have to train the $h_\theta(x)$ to make them optimum. We iterate through the lambda, and for each lambda we iterate through the models to generate the $h_\theta(x)$.</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>AI &amp;amp; Machine Learning</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Machine Learning</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Matlab tricks on realizing back propagation</title>
+    <link href="/2022/01/22/matlab-tricks-on-realizing-back-propagation/"/>
+    <url>/2022/01/22/matlab-tricks-on-realizing-back-propagation/</url>
+    
+    <content type="html"><![CDATA[<p>[h2title]Reshaping the matrix[&#x2F;h2title] In Matlab, we can freely assemble multiple matrixes into one huge matrix, and we can retrieve the original matrixes by some built-in functions. For example, we combine the three theta matrixes into one huge matrix by the following code: thetaVector &#x3D; [ Theta1(:); Theta2(:); Theta3(:); ] We can reshape the matrix back by: Theta1 &#x3D; reshape(thetaVector(x1:x2),x,y) The x1,x2 represents the range of thetaVector you wish to reshape. The x and y represent the size of the matrix Theta1. [h2title]Gradient Checking[&#x2F;h2title] Have you heard of debug points during your OI tournaments or your browser debugging? Well, gradient checking is some sort like that. It estimates a rough value of the gradient so when you’re running your gradient descent, you can actually see the effectiveness of the algorithm by printing the values of the estimated gradient. If you have studied calculus, you may be already familiar with the formula of calculating the gradient. Unfinished…</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>AI &amp;amp; Machine Learning</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Cost function and back propagation</title>
+    <link href="/2022/01/03/cost-function-and-back-propagation/"/>
+    <url>/2022/01/03/cost-function-and-back-propagation/</url>
+    
+    <content type="html"><![CDATA[<p>My GPA is getting destroyed so I escape reality by writing neural network notes. G o o d   f o r   m e [h2title]Cost function for neural networks[&#x2F;h2title]</p><p>Firstly let’s recap the regularized cost function of logistic regression, which we have revised multiple times.</p><p>$$J(\theta) &#x3D; -\frac{1}{m} \sum_{i&#x3D;1}^m\cdot \left[y^{(i)}\log(h_\theta(x^{(i)}))+(1-y^{(i)})\log(1-\theta(x^{(i)})) \right ]+ \frac\lambda {2m}\sum_{j&#x3D;1}^{n} \theta^2_j$$</p><p>The neural network cost function is mostly similar, being <strong>slightly more complicated.</strong></p><p>$$ J(\Theta)&#x3D;-\frac{1}{m} \sum_{i&#x3D;1}^{m} \sum_{k&#x3D;1}^{K}\left[y_{k}^{(i)} \log \left(\left(h_{\Theta}\left(x^{(i)}\right)\right)_{k}\right)+\left(1-y_{k}^{(i)}\right) \log \left(1-\left(h_{\Theta}\left(x^{(i)}\right)\right)_{k}\right)\right]+\frac{\lambda}{2 m} \sum_{l&#x3D;1}^{L-1} \sum_{i&#x3D;1}^{s_l} \sum_{j&#x3D;1}^{s_{l+1}}\left(\Theta_{j, i}^{(l)}\right)^{2} $$ I know what are you guys thinking. This is only slightly complicated? Actually, if you understand the model of a neural network, you should be able to understand this. I just realized I forgot to introduce the new variables. My bad.</p><p>k: stands for the total number of output units in the neural network.</p><p>$s_l$: stands for the number of nodes in a layer</p><p>l: stands for the number of layers</p><p>As now we’re dealing with the entire neural network here, we need to iterate through every output unit to calculate the cost of the entire network. Thus in the first part of the cost function, we introduce the double sum $\sum_{k&#x3D;1}^{K}$ for this particular purpose. For the regularization component, here we utilize a triple sum(what). As we talked about before in the neural network model, the size of the $\theta$ matrix is equal to the number of nodes in the next layer * the number of nodes in this layer. We iterate the matrix two-dimensionally and square every term and add it to our cost. We need to do this for every layer so this is what the $\sum_{l&#x3D;1}^{L-1}$ is for. [h2title]Back propagation[&#x2F;h2title] We combine forward propagation and backpropagation to minimize the cost of our neural network. Firstly, we complete forward propagation using the train sets (or the training examples) and derive the output nodes. This process will derive the values for all the activation units in the neural network. The next thing we do is to derive $\delta$ . This is a new concept, as it represents the error values in this neural network. You might suggest that this is already represented by the cost function, but actually, the error values are similar to the derivatives of the cost functions. We’ll introduce this more later on. Anyways, the formula to calculate $\delta$ when it’s at the output layer is $\delta^{(L)}&#x3D;a^{(L)}-y^{(t)}$. This is pretty easy to understand as this just calculates the difference between the activation values at the output layer and the actual value in the training examples. Notice how this is a vectorized representation so the $\delta^{(L)}$ is a vector. Now here comes the interesting part. We use the $\delta^{(L)}$ at the output layer to calculate the $\delta^{(L-1)}$ and its former terms by the formula below. $$ \delta^{(l)}&#x3D;\left(\left(\Theta^{(l)}\right)^{T} \delta^{(l+1)}\right) \cdot * g’(z{(l)}) $$ To be honest this is very perplexing. What we’re actually doing here is to multiply the next layer’s error values with the theta of this layer’s. We then do an element-wise multiplication with the derivatives of the activation function (sigmoid function here is) with the input values of this layer. The derivatives here can be represented also through $a^{(l)} \cdot *(1-a^{(l)})$, so we can rewrite the formula into… $$ \delta^{(l)}&#x3D;\left(\left(\Theta^{(l)}\right)^{T} \delta^{(l+1)}\right) \cdot * a^{(l)} \cdot *\left(1-a^{(l)}\right) $$ Through this function, we can derive all the error values of the neural network up to $\delta^{(2)}$. We don’t need to compute $\delta^{(1)}$ because the error values are not needed in the input layer. After we compute the error values for <strong>one training example,</strong> we then use an accumulator matrix to add up the error values. We call this matrix $\Delta$. The vectorized approach of the accumulation function is $\Delta^{(l)}:&#x3D;\Delta^{(l)}+\delta^{(l+1)}\left(a^{(l)}\right)^{T}$. We then repeat the process for every training example, for a total of m times. After this, we can finally deduce the partial derivatives of the cost function by the last formula below.</p><p>$\begin{aligned} D_{i, j}^{(l)} &amp;:&#x3D;\frac{1}{m}\left(\Delta_{i, j}^{(l)}+\lambda \Theta_{i, j}^{(l)}\right), \text { If } \mathrm{j} \neq 0 . \\ D_{i, j}^{(l)} &amp;:&#x3D;\frac{1}{m} \Delta_{i, j}^{(l)} \text { If } \mathrm{j}&#x3D;0 \end{aligned}$</p><p>The last process here is to divide the $\Theta$ matrix by m so it computes the average for all the error values. The regularization term here may also seem very familiar to you, and as for always, we don’t consider the part when j &#x3D; 0. To be honest, the backpropagation algorithm is insanely challenging to understand. Try your best at following the steps of backpropagation and maybe you can gain a deeper understanding of the concept here. In the next article perhaps I will cover some more practical instructions on actually realizing the backpropagation in Matlab, but that’s only the luckiest circumstance if I remember this blog at all.</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>AI &amp;amp; Machine Learning</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Custom Styles</title>
+    <link href="/2022/01/02/wp-global-styles-kratos-main/"/>
+    <url>/2022/01/02/wp-global-styles-kratos-main/</url>
+    
+    <content type="html"><![CDATA[<p>{“version”: 2, “isGlobalStylesUserThemeJSON”: true }</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>uncategorized</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>The new CSS Overview tab on Chrome(Edge)</title>
+    <link href="/2021/12/06/the-new-css-overview-tab/"/>
+    <url>/2021/12/06/the-new-css-overview-tab/</url>
+    
+    <content type="html"><![CDATA[<p>It’s barely new anymore since it’s been out for more than one month and someone as blind as me just couldn’t notice the new tab. Oh well. [h2title]How to access this tab[&#x2F;h2title] Literally, just press f12 on your browser and find your tab right away. I think my chrome is not updated so I’m gonna use edge here. <a href="https://vinceli.tech/wp-content/uploads/2021/12/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211206201414.png"><img src="https://vinceli.tech/wp-content/uploads/2021/12/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211206201414-1024x534.png"></a> [h2title]How to use it[&#x2F;h2title] Let’s say you’re a talented web designer but with absolute zero art taste. You decide to design a little functional website for your entire school to use. And it looks a bit like this…: <a href="https://vinceli.tech/wp-content/uploads/2021/12/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211206201341.png"><img src="https://vinceli.tech/wp-content/uploads/2021/12/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211206201341-1024x481.png"></a> I know what you guys are thinking. This is a terrible color combination! But lucky for you, with your IMPECCABLE color palette, you can’t even see your own mistakes. Now the CSS Overview can help you with this problem!(</p><p>This tab consists of five parts:</p><p><a href="https://vinceli.tech/wp-content/uploads/2021/12/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211206203553.png"><img src="https://vinceli.tech/wp-content/uploads/2021/12/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211206203553-1024x143.png"></a> <strong>Overview summary:</strong> This provides information for the total amount of elements, selectors, and style rules on your page. Not sure why you absolutely need those statistics though…</p><hr><p><a href="https://vinceli.tech/wp-content/uploads/2021/12/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211206203840.png"><img src="https://vinceli.tech/wp-content/uploads/2021/12/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211206203840.png"></a> <strong>Colors:</strong> This tab shows you detailed information on all the colors on your website, including background colors and text colors. This tab also suggests improvements on the contrasting background color and text color, so you can adjust your palette to make your website more human-friendly. When you click on the colors, the browser will show you a list of elements that all use this color. <a href="https://vinceli.tech/wp-content/uploads/2021/12/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211206210418.png"><img src="https://vinceli.tech/wp-content/uploads/2021/12/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211206210418.png"></a> Also, I investigated something I found pretty intriguing. Notice here we add a completely useless cyan box. <a href="https://vinceli.tech/wp-content/uploads/2021/12/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211206204519.png"> <img src="https://vinceli.tech/wp-content/uploads/2021/12/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211206204519-1024x481.png"></a> If we apply this box with a “display: none;”, the CSS overview would not take this element into the consideration of colors. <a href="https://vinceli.tech/wp-content/uploads/2021/12/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211206205925.png"><img src="https://vinceli.tech/wp-content/uploads/2021/12/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211206205925.png"></a> However, if we apply an “opacity: 0;” or “visibility: none;” onto the box, the CSS overview actually considers the box as a color, even though it’s not shown at all. <a href="https://vinceli.tech/wp-content/uploads/2021/12/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211206210159.png"><img src="https://vinceli.tech/wp-content/uploads/2021/12/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211206210159.png"></a> Please notice that the website still looks like this: <a href="https://vinceli.tech/wp-content/uploads/2021/12/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211206201341.png"><img src="https://vinceli.tech/wp-content/uploads/2021/12/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211206201341-1024x481.png"></a>I know probably no one really cares about this cute little interaction, but this still demonstrates some difference between the realization of different methods in CSS, though they all achieve the same effects.</p><hr><p><a href="https://vinceli.tech/wp-content/uploads/2021/12/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211206210840.png"><img src="https://vinceli.tech/wp-content/uploads/2021/12/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211206210840-1024x374.png"></a><strong>Font info:</strong> This is kind of similar to the colors tab, as it lists all the fonts and their corresponding attributes on the page. You can also click on the occurrences and investigate which element is using the font. <a href="https://vinceli.tech/wp-content/uploads/2021/12/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211206211102.png"><img src="https://vinceli.tech/wp-content/uploads/2021/12/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211206211102.png"></a></p><hr><p><a href="https://vinceli.tech/wp-content/uploads/2021/12/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211206211226.png"><img src="https://vinceli.tech/wp-content/uploads/2021/12/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211206211226-1024x74.png"></a> <strong>Unused declarations:</strong> This tab lists all the style rules that actually have no use at all or contradict with other style rules on an element. An independent web designer that starts their website from scratch may not notice this as much as an error, but in integrated platforms (like WordPress) these mistakes may occur. Again, you can click on the occurrences and find the location of your errors…</p><hr><p><a href="https://vinceli.tech/wp-content/uploads/2021/12/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211206211705.png"><img src="https://vinceli.tech/wp-content/uploads/2021/12/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211206211705.png"></a> <strong>Media queries:</strong> Lastly, the overview also offers a tab that lists all media queries descending from the highest occurrences to the least. Most of them may be from other scripts, such as bootstraps, or other stylesheets.</p><hr><p>[h2title]Hope for a better future[&#x2F;h2title] This function is actually only in preview, so it may not be sufficient enough to meet the demands of some front-end developers. For example, a function I would love is to change the color of all the elements with the same color into a different color, which can instantly change the style of the entire web page. Some recommended color schemes can also be listed in this tab so web designers with zero artistic instincts (such as me, especially me) can also design a website that’s suitable for humans to visit, not aliens.</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>Website Design</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Opening your own minecraft server with Vultr VPS</title>
+    <link href="/2021/11/19/opening-your-own-minecraft-server-with-vultr-vps/"/>
+    <url>/2021/11/19/opening-your-own-minecraft-server-with-vultr-vps/</url>
+    
+    <content type="html"><![CDATA[]]></content>
+    
+    
+    <categories>
+      
+      <category>uncategorized</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Neural Networks</title>
+    <link href="/2021/11/14/neural-networks/"/>
+    <url>/2021/11/14/neural-networks/</url>
+    
+    <content type="html"><![CDATA[<p>Neural networks are algorithms that attempt to mimic the function of the brain. The concept is raised in the 1980s, diminished in popularity in the 1990s, and is now implemented for many applications. <a href="https://vinceli.tech/wp-content/uploads/2021/11/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211114205458.png"></a> <img src="https://vinceli.tech/wp-content/uploads/2021/11/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211114205458.png"> This is a basic neuron model. It obviously contains three parts: the input wires, the neuron, and the output wires. The neuron processes the input wires into the output. Sometimes, the input wires would consist of an $x_0$. This term is usually 1 and is referred to as the <strong>bias term.</strong> The <strong>activation function</strong> refers to the non-linear function the neuron uses as the $g(z)$. Why do we emphasize the non-linear here? Well, if the functions are actually linear, the neural network would actually produce a linear model, which renders the neural network completely useless. The <strong>weights</strong> of a model are the same thing as the parameters of a model ($\theta$). <a href="https://vinceli.tech/wp-content/uploads/2021/11/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211114214547.png"><img src="https://vinceli.tech/wp-content/uploads/2021/11/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211114214547-300x187.png"></a> In a neural network, the first layer is usually referred to as the <strong>input layer</strong>. The final layer is also referred to as the <strong>output layer</strong>. The term <strong>hidden layers</strong> are intermediate layers that sit in between the input layer and the output layer (not $x$ nor $y$). Note the hidden layer can contain multiple layers and they also contain bias units. $$\begin{align} a_i^{(j)} &amp;&#x3D; \text{“activation” of unit i in layer j} \newline \Theta^{j} &amp;&#x3D; \text{matrix of weights controlling function mapping from layer j to layer (j+1).} \end{align}$$ We can also determine the size of $\Theta$. \begin{align*}\text{If network has }s_j​ \text{units in layer j and }s_{j+1}\text{​ units in layer j+1, then }Θ^{(j)} \text{will be of dimension }s_{j+1}​×(s_j​+1).\end{align*} Our entire neural network can be described as: $$\begin{align*} a_1^{(2)} &#x3D; g(\Theta_{10}^{(1)}x_0 + \Theta_{11}^{(1)}x_1 + \Theta_{12}^{(1)}x_2 + \Theta_{13}^{(1)}x_3) \newline a_2^{(2)} &#x3D; g(\Theta_{20}^{(1)}x_0 + \Theta_{21}^{(1)}x_1 + \Theta_{22}^{(1)}x_2 + \Theta_{23}^{(1)}x_3) \newline a_3^{(2)} &#x3D; g(\Theta_{30}^{(1)}x_0 + \Theta_{31}^{(1)}x_1 + \Theta_{32}^{(1)}x_2 + \Theta_{33}^{(1)}x_3) \newline h_\Theta(x) &#x3D; a_1^{(3)} &#x3D; g(\Theta_{10}^{(2)}a_0^{(2)} + \Theta_{11}^{(2)}a_1^{(2)} + \Theta_{12}^{(2)}a_2^{(2)} + \Theta_{13}^{(2)}a_3^{(2)}) \newline \end{align*}$$ [h2title]Forward Propagation[&#x2F;h2title] Now let’s talk about forward propagation, but firstly let’s define a variable $z_k^{(j)}$ that includes all the terms in the $g$ function. $$\begin{align*}a_1^{(2)} &#x3D; g(z_1^{(2)}) \newline a_2^{(2)} &#x3D; g(z_2^{(2)}) \newline a_3^{(2)} &#x3D; g(z_3^{(2)}) \newline \end{align*}$$</p><p>Where:</p><p>$$\begin{align}z_k^{(2)} &#x3D; \Theta^{(1)}_{k,0}x_0 + \Theta^{(1)}_{k,1}x_1 +…+\Theta^{(1)}_{k,n}x_n \end{align}$$</p><p>Vectorization of $z$:</p><p>$$\begin{align*}x &#x3D; \begin{bmatrix}x_0 \newline x_1 \newline\cdots \newline x_n\end{bmatrix} &amp;z^{(j)} &#x3D; \begin{bmatrix}z_1^{(j)} \newline z_2^{(j)} \newline\cdots \newline z_n^{(j)}\end{bmatrix}\end{align*}$$ $$\begin{align} z^{(j)} &#x3D; \Theta^{(j-1)} a^{(j-1)} \end{align}$$</p><p>Now let’s substitute our $z$ back into our original function…</p><p>$$\begin{align} a^{(j)} &#x3D; g(z^{(j)}) \end{align}$$</p><p>The computation for the next layer will be the following:</p><p>$$\begin{align} z^{(j+1)} &#x3D; \Theta^{(j)} a^{(j)} \end{align}$$</p><p>Please note bias units can be added throughout the process.</p><p>Now we should have a perfect algorithm that allows us to calculate $a^{(x)}$:</p><p>$$\begin{align} z^{(x)} &#x3D; \Theta^{(x-1)} a^{(x-1)} \end{align}$$ $$\begin{align} a^{(x)} &#x3D; g(z^{(x)}) \end{align}$$</p><p>(why did I write it again???)</p><p>This algorithm, as it starts from the first layers, namely the input layers, and propagates all the way through the hidden layers to the output layers, is referred to as <strong>forward propagation</strong>. You may probably already understand what backward propagation is, but let’s slow it down a little, shall we? [h2title]Logic gates[&#x2F;h2title] (Actually, this part is really easy. I’m gonna presume you already know everything about logic gates.) For a logic gate, let’s say we have binary inputs of $x_1$ and $x_2$ (0 and 1). Now now now, we can set our $\Theta$ in different values so when both $x_1$ and $x_2$ are 1, we output 1. To achieve this, bias terms are necessary to aid the hypothesis. $$\begin{align*}&amp; h_\Theta(x) &#x3D; g(-30 + 20x_1 + 20x_2) \newline \newline &amp; x_1 &#x3D; 0 \ \ and \ \ x_2 &#x3D; 0 \ \ then \ \ g(-30) \approx 0 \newline &amp; x_1 &#x3D; 0 \ \ and \ \ x_2 &#x3D; 1 \ \ then \ \ g(-10) \approx 0 \newline &amp; x_1 &#x3D; 1 \ \ and \ \ x_2 &#x3D; 0 \ \ then \ \ g(-10) \approx 0 \newline &amp; x_1 &#x3D; 1 \ \ and \ \ x_2 &#x3D; 1 \ \ then \ \ g(10) \approx 1\end{align*}$$</p><p>(I’m too bored for new examples)</p><p>The only thing worth mentioning here is that $g(x) \approx 1$ when $x &gt; 0$, and $\approx 1$ when $x &lt; 0$. Now let’s construct the OR gate and the NOR gate <em><strong>JUST FOR FUN!!!!!</strong></em> $$\begin{align*}&amp; h_\Theta(x) &#x3D; g(10 - 20x_1 - 20x_2) \newline \newline &amp; x_1 &#x3D; 0 \ \ and \ \ x_2 &#x3D; 0 \ \ then \ \ g(10) \approx 1 \newline &amp; x_1 &#x3D; 0 \ \ and \ \ x_2 &#x3D; 1 \ \ then \ \ g(-10) \approx 0 \newline &amp; x_1 &#x3D; 1 \ \ and \ \ x_2 &#x3D; 0 \ \ then \ \ g(-10) \approx 0 \newline &amp; x_1 &#x3D; 1 \ \ and \ \ x_2 &#x3D; 1 \ \ then \ \ g(-30) \approx 0\end{align*}$$</p><hr><p>$$\begin{align*}&amp; h_\Theta(x) &#x3D; g(-10 + 20x_1 + 20x_2) \newline \newline &amp; x_1 &#x3D; 0 \ \ and \ \ x_2 &#x3D; 0 \ \ then \ \ g(-10) \approx 0 \newline &amp; x_1 &#x3D; 0 \ \ and \ \ x_2 &#x3D; 1 \ \ then \ \ g(10) \approx 1 \newline &amp; x_1 &#x3D; 1 \ \ and \ \ x_2 &#x3D; 0 \ \ then \ \ g(10) \approx 1 \newline &amp; x_1 &#x3D; 1 \ \ and \ \ x_2 &#x3D; 1 \ \ then \ \ g(30) \approx 1\end{align*}$$ Please don’t contact me to help you find out which expression is which… Now let’s do something more advanced and try to create an XNOR gate. An XNOR gate can be constructed using two AND gates and one NOR gate. We now need to add a hidden layer to our neural network now. $$\begin{align*}\begin{bmatrix}x_0 \newline x_1 \newline x_2\end{bmatrix} \rightarrow\begin{bmatrix}a_1^{(2)} \newline a_2^{(2)} \end{bmatrix} \rightarrow\begin{bmatrix}a^{(3)}\end{bmatrix} \rightarrow h_\Theta(x)\end{align*}$$ According to the formula mentioned above in the passage, we can deduce the values for all the nodes. $$\begin{align*}&amp; a^{(2)} &#x3D; g(\Theta^{(1)} \cdot x) \newline&amp; a^{(3)} &#x3D; g(\Theta^{(2)} \cdot a^{(2)}) \newline&amp; h_\Theta(x) &#x3D; a^{(3)}\end{align*}$$ The $\Theta(1)$ will be the combination of an AND gate and a NOR gate. The $\Theta(2)$ would be an AND gate.</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>AI &amp;amp; Machine Learning</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Machine Learning</tag>
+      
+      <tag>Neural Network</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>语言</title>
+    <link href="/2021/11/08/%E8%AF%AD%E8%A8%80/"/>
+    <url>/2021/11/08/%E8%AF%AD%E8%A8%80/</url>
+    
+    <content type="html"><![CDATA[]]></content>
+    
+    
+    <categories>
+      
+      <category>uncategorized</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Untitled Post - 3</title>
+    <link href="/2021/11/08/199/"/>
+    <url>/2021/11/08/199/</url>
+    
+    <content type="html"><![CDATA[]]></content>
+    
+    
+    <categories>
+      
+      <category>uncategorized</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Untitled Post - 4</title>
+    <link href="/2021/11/08/200/"/>
+    <url>/2021/11/08/200/</url>
+    
+    <content type="html"><![CDATA[]]></content>
+    
+    
+    <categories>
+      
+      <category>uncategorized</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Untitled Post - 5</title>
+    <link href="/2021/11/08/198/"/>
+    <url>/2021/11/08/198/</url>
+    
+    <content type="html"><![CDATA[]]></content>
+    
+    
+    <categories>
+      
+      <category>uncategorized</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Untitled Post - 1</title>
+    <link href="/2021/11/08/195/"/>
+    <url>/2021/11/08/195/</url>
+    
+    <content type="html"><![CDATA[<p>This category contains the basic theory of internet, the protocols to set up your website using a domain and a server, and how to design your website using HTML&#x2F;CSS&#x2F;JS.</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>uncategorized</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Untitled Post - 2</title>
+    <link href="/2021/11/08/197/"/>
+    <url>/2021/11/08/197/</url>
+    
+    <content type="html"><![CDATA[<p>This category contains some basic principles of artificial learning and some models I have constructed for fun</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>uncategorized</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>How to establish your own wordpress site</title>
+    <link href="/2021/11/08/how-to-establish-your-own-wordpress-site/"/>
+    <url>/2021/11/08/how-to-establish-your-own-wordpress-site/</url>
+    
+    <content type="html"><![CDATA[<p>-———————————————————————————————————————————————————————</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>uncategorized</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>注册</title>
+    <link href="/2021/11/07/172/"/>
+    <url>/2021/11/07/172/</url>
+    
+    <content type="html"><![CDATA[]]></content>
+    
+    
+    <categories>
+      
+      <category>uncategorized</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>登录</title>
+    <link href="/2021/11/07/173/"/>
+    <url>/2021/11/07/173/</url>
+    
+    <content type="html"><![CDATA[]]></content>
+    
+    
+    <categories>
+      
+      <category>uncategorized</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Default Login</title>
+    <link href="/2021/11/07/default-login/"/>
+    <url>/2021/11/07/default-login/</url>
+    
+    <content type="html"><![CDATA[]]></content>
+    
+    
+    <categories>
+      
+      <category>uncategorized</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Default Registration</title>
+    <link href="/2021/11/07/default-registration/"/>
+    <url>/2021/11/07/default-registration/</url>
+    
+    <content type="html"><![CDATA[]]></content>
+    
+    
+    <categories>
+      
+      <category>uncategorized</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Default Profile</title>
+    <link href="/2021/11/07/default-profile/"/>
+    <url>/2021/11/07/default-profile/</url>
+    
+    <content type="html"><![CDATA[]]></content>
+    
+    
+    <categories>
+      
+      <category>uncategorized</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Members</title>
+    <link href="/2021/11/07/members/"/>
+    <url>/2021/11/07/members/</url>
+    
+    <content type="html"><![CDATA[]]></content>
+    
+    
+    <categories>
+      
+      <category>uncategorized</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Underfitting, Overfitting, Regularization.</title>
+    <link href="/2021/11/07/underfitting-overfitting-regularization/"/>
+    <url>/2021/11/07/underfitting-overfitting-regularization/</url>
+    
+    <content type="html"><![CDATA[<p><a href="https://vinceli.tech/wp-content/uploads/2021/11/0cOOdKsMEeaCrQqTpeD5ng_2a806eb8d988461f716f4799915ab779_Screenshot-2016-11-15-00.23.30.png"><img src="https://vinceli.tech/wp-content/uploads/2021/11/0cOOdKsMEeaCrQqTpeD5ng_2a806eb8d988461f716f4799915ab779_Screenshot-2016-11-15-00.23.30.png"></a>Observe the three graphs that attempt to fit the training examples. The left graph is very straightforward. It’s just a very simple linear function. It is incredibly rough, as most points are actually somehow far from the linear function. When our hypothesis function cannot map to the general trend of the data, we call this <strong>underfitting.</strong> (this may not be the best example, but leave me alone) The right graph is very…convoluted. It takes lots of turns and matches all the examples perfectly. Even though this may seem like an excellent hypothesis function, it can’t really give accurate prediction results, according to the graph, the results will be lower and lower, which is exactly the opposite trend we want. This is called <strong>overfitting,</strong> as even though the graph completely fits the data points, the prediction the hypothesis function gives cannot be reliable. There is no question that both underfitting and overfitting can cause our hypothesis function to predict results far from their actual values. Underfitting is quite easy to fix, just by adding more terms to our equation so it can fit the data better. Overfitting, however, may be addressed by the following two methods: 1): You can either reduce the number of samples 2): Or you can employ regularization on the features. [h2title]Regularization[&#x2F;h2title] What regularization basically do is that it keeps the number of features in our hypothesis function, but decreases their magnitude. Here is an example of how we modify our cost function so it can help us to decrease the features’ magnitude. $$J(\theta)&#x3D;min_\theta \frac{1}{2m}\sum_{i&#x3D;1}^{m} \left(h_{\theta}(x^{(i)})-y^{(i)}\right)^2 + 1000 * \theta^2_3 + 1000 * \theta^2_4$$ Compared to the normal cost function, we now have added two more terms at the end of the function. These terms are $\theta^2_3$ and $\theta^2_4$, but inflated 1000 times. Why would this help us to decrease their magnitude? This is because we set their coefficients very high, even when $\theta^2_3$ is equal to 2, it can propose a huge increase in our cost function. Because we’re selecting the minimum value, we would never want that, so their values would tend to be very low. This has achieved our premise of regularization. There are still some very obvious problems with this method. Firstly, you may not always get a function that contained squared terms, so it may be very difficult to differentiate actually which term impacts the function the most. So a universal cost function is invented… $$J(\theta)&#x3D;min_\theta \frac{1}{2m}\sum_{i&#x3D;1}^{m} \left(h_{\theta}(x^{(i)})-y^{(i)}\right)^2 + \lambda \sum_{j&#x3D;1}^{n} \theta^2_j$$ ($\theta_0$ is not considered… Don’t worry about this) The $\lambda$ is the regularization parameter. (the second parameter you might learn about? The first being the learning rate $\alpha$) There are two goals we wanted to achieve in our hypothesis function. The first one is to keep our curve close to our data examples. The second one is to keep our parameters as small as possible. $\lambda$ here sets our balance between these two goals - keeping our data not underfitting, nor overfitting. The gradient descent form of our regularized linear regression is the following: $$\begin{align*} &amp; \text{Repeat}\ \lbrace \newline &amp; \ \ \ \ \theta_0 :&#x3D; \theta_0 - \alpha\ \frac{1}{m}\ \sum_{i&#x3D;1}^m (h_\theta(x^{(i)}) - y^{(i)})x_0^{(i)} \newline &amp; \ \ \ \ \theta_j :&#x3D; \theta_j - \alpha\ \left[ \left( \frac{1}{m}\ \sum_{i&#x3D;1}^m (h_\theta(x^{(i)}) - y^{(i)})x_j^{(i)} \right) + \frac{\lambda}{m}\theta_j \right] &amp;\ \ \ \ \ \ \ \ \ \ j \in \lbrace 1,2…n\rbrace\newline &amp; \rbrace \end{align*}$$ $$\theta_j : &#x3D; \theta_j(1 -\alpha \frac \lambda m)- \alpha \frac 1 m\sum_{i&#x3D;1}^n (h_\theta(x^{(i)}) - y^{(i)})x_j^{(i)}$$ Pretty sure you can figure out the maths process. Normal equation: $$\begin{align*}&amp; \theta &#x3D; \left( X^TX + \lambda \cdot L \right)^{-1} X^Ty \newline&amp; \text{where}\ \ L &#x3D; \begin{bmatrix} 0 &amp; &amp; &amp; &amp; \newline &amp; 1 &amp; &amp; &amp; \newline &amp; &amp; 1 &amp; &amp; \newline &amp; &amp; &amp; \ddots &amp; \newline &amp; &amp; &amp; &amp; 1 \newline\end{bmatrix}\end{align*}$$ This is also basically the same, only we add one another term in the parentheses. For the logistic regression, we just add one more term on its cost function. \begin{align*}J(\theta) &#x3D; -\frac{1}{m} \sum_{i&#x3D;1}^m\cdot \left[y^{(i)}\log(h_\theta(x^{(i)}))+(1-y^{(i)})\log(1-\theta(x^{(i)})) \right ]+ \frac\lambda {2m}\sum_{j&#x3D;1}^{n} \theta^2_j \end{align*}</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>AI &amp;amp; Machine Learning</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Logistic regression: which is used for classification</title>
+    <link href="/2021/11/02/logistic-regression-which-is-used-for-classification/"/>
+    <url>/2021/11/02/logistic-regression-which-is-used-for-classification/</url>
+    
+    <content type="html"><![CDATA[<p>Recently I am currently attending an online session on machine learning provided by Stanford University and taught by the great industry legend Andrew Ng. (only to my limited perspective). This is the content exclusively in week 3 so if you can’t catch up I might write the articles that introduce the chapters before this week in the future (actually most likely you’re never going to see them, my deep regrets). Logistic regression is actually used to help us predict data samples in a classification problem, which requires us to label data samples as 0 or 1. For example, we need to classify a phone as an advertising spam call or just a regular call. Notice here there are only two types of possibilities available, being the call as spam or not spam. which is referred to as a binary classification problem. Now of course if we need to classify the call as an advertisement, a family call, or a delivery call it would not be binary then, but we’re not discussing this kind of problem at the moment, and for very simple and realistic reasons - I haven’t even learned them yet! (Now now, you might ask, what does logistic regression have to do with regression? While even though logistic regression is used to solve classification problems, but the approaches taken during the process have been somehow involved with regression, but please don’t be confused by this concept. In fact, there is no need to remember this when implementating your solutions.) The question here is, the y value of our data samples can definitely be out of the range of 0 to 1. Thus we need to process the data samples in our data regression model to fit it in the range of 0 and 1. $$g(z) &#x3D; \frac {1} {1+{e}^{-z}}$$ (Mathjax is such a good thing, am I right?) The function that is listed above is called the <strong>sigmoid function.</strong> Now actually the sigmoid function does not just include this function but includes some other functions such as the arctan function, but for the convenience of understanding, in machine learning usually, we just refer to this function only. The sigmoid function has a very unique ability that can map <strong>ANY</strong> number in the range from 0 to 1, which as you all know is the range of the possibility, indicating that now we can convert any real number to a value of possibility! Hooray! [h2title]Cost function[&#x2F;h2title] As you may all remember from the linear regression classes, you may recall that the general form of cost function is the equation below: $$\displaystyle J(\theta)&#x3D;\frac{1}{2m}\sum_{i&#x3D;1}^{m} \left(h_{\theta}(x^{(i)})-y^{(i)}\right)^2 $$ Yeah… We’re not gonna do that. If we apply this function to our data samples, we’ll end up having a curve of the cost function that is not actually convex - which means, there are multiple local minimums. We wouldn’t really favor that, since it would cause our little gradient descent algorithm to be stuck in a little hole. So we came with an exclusive cost function just for logistic regression: \begin{align*}&amp; J(\theta) &#x3D; \dfrac{1}{m} \sum_{i&#x3D;1}^m \mathrm{Cost}(h_\theta(x^{(i)}),y^{(i)}) \newline &amp; \mathrm{Cost}(h_\theta(x),y) &#x3D; -\log(h_\theta(x)) \; &amp; \text{if y &#x3D; 1} \newline &amp; \mathrm{Cost}(h_\theta(x),y) &#x3D; -\log(1-h_\theta(x)) \; &amp; \text{if y &#x3D; 0}\end{align*} To be honest, I don’t know what the hell is this, so I decided to plot this function onto desmos. (In all the graphs, we are only concerned when x is smaller than 1 and bigger than 0.) <a href="https://vinceli.tech/wp-content/uploads/2021/11/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211104194700.png"><img src="https://vinceli.tech/wp-content/uploads/2021/11/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211104194700-300x256.png"></a> This is the graph of log(x). Now the x here is actually a representation of $h_\theta(x)$, so you can see when $h_\theta(x)$ approaches zero, the cost will be close to negative infinity. If the $h_\theta(x)$ is 1 however, you can see the cost is actually zero. Why it is negative infinity? Please don’t ask me. In order to fix this, we need to add a negative sign in front of the log(x), which would bring it to -log(x). <a href="https://vinceli.tech/wp-content/uploads/2021/11/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211104195110.png"><img src="https://vinceli.tech/wp-content/uploads/2021/11/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211104195110-300x300.png"></a>Now we have reflected the entire graph to the x-axis, so when $h_\theta(x)$ approaches zero, the cost would be positive infinity. Can you guess the y value from the graph? y equals 1. Because if $h_\theta(x)$ is 1, that proves our hypothesis right, which would bring the cost down to zero. (Yes!) But if you made a stupid mistake and predicted y as 0, well, you’re gonna have a cost even higher than admission fees to SCIE, which is infinity. Now, this is only the first scenario. The second scenario here is that y can be equated to 0, in this case, we need to implement a slightly different algorithm. <a href="https://vinceli.tech/wp-content/uploads/2021/11/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211104195513.png"><img src="https://vinceli.tech/wp-content/uploads/2021/11/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211104195513-300x277.png"></a>Here is the scenario when y is 0. You can see the graph has been reflected to y &#x3D; 0.5. When $h_\theta(x)$ is 0, the cost would be zero, and when $h_\theta(x)$ is 1, the cost would be infinity. Pretty easy to understand, huh? You can use this link to access the calculator if you wanna: <a href="https://www.desmos.com/calculator/4l0zc8t8lo">https://www.desmos.com/calculator/4l0zc8t8lo</a></p><p>The vectorized version of the cost function is the following equation:</p><p>\begin{align*} &amp; h &#x3D; g(X\theta)\newline &amp; J(\theta) &#x3D; \frac{1}{m} \cdot \left(-y^{T}\log(h)-(1-y)^{T}\log(1-h)\right) \end{align*} [h2title]Multiclass Classification: One-vs-all[&#x2F;h2title]</p><p>So we’re still discussing multiclass classification towards the end…</p><p>\begin{align*}&amp; y \in \lbrace0, 1 … n\rbrace \newline&amp; h_\theta^{(0)}(x) &#x3D; P(y &#x3D; 0 x ; \theta) \newline&amp; h_\theta^{(1)}(x) &#x3D; P(y &#x3D; 1 x ; \theta) \newline&amp; \cdots \newline&amp; h_\theta^{(n)}(x) &#x3D; P(y &#x3D; n x ; \theta) \newline&amp; \mathrm{prediction} &#x3D; \max_i( h_\theta ^{(i)}(x) )\newline\end{align*} Now we are using a one-versus-all classfication algorithm. What we do is we seperate the examples into several binary classifiers(the number of the classfiers will be correspondent to the number of classes). We then run the sample into the classfiers and pick the classfier that gives the highest probability.</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>AI &amp;amp; Machine Learning</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Machine Learning</tag>
+      
+      <tag>Classification</tag>
+      
+      <tag>Logistic Regression</tag>
+      
+      <tag>Matlab</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>机器学习</title>
+    <link href="/2021/10/31/148/"/>
+    <url>/2021/10/31/148/</url>
+    
+    <content type="html"><![CDATA[<p>This category contains some basic principles of artificial learning and some models I have constructed for fun</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>uncategorized</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Bubblesort</title>
+    <link href="/2021/09/24/bubblesort/"/>
+    <url>/2021/09/24/bubblesort/</url>
+    
+    <content type="html"><![CDATA[<p>In this article, I’m going to describe an algorithm that allows you to</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>uncategorized</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Mixing Milk</title>
+    <link href="/2021/09/22/mixing-milk/"/>
+    <url>/2021/09/22/mixing-milk/</url>
+    
+    <content type="html"><![CDATA[<p>The Merry Milk Makers company buys milk from farmers, packages it into attractive 1- and 2-Unit bottles, and then sells that milk to grocery stores so we can each start our day with delicious cereal and milk.</p><p>Since milk packaging is such a difficult business in which to make money, it is important to keep the costs as low as possible. Help Merry Milk Makers purchase the farmers’ milk in the cheapest possible manner. The MMM company has an extraordinarily talented marketing department and knows precisely how much milk they need each day to package for their customers.</p><p>The company has contracts with several farmers from whom they may purchase milk, and each farmer has a (potentially) different price at which they sell milk to the packing plant. Of course, a herd of cows can only produce so much milk each day, so the farmers already know how much milk they will have available.</p><p>Each day, Merry Milk Makers can purchase an integer number of units of milk from each farmer, a number that is always less than or equal to the farmer’s limit (and might be the entire production from that farmer, none of the production, or any integer in between).</p><p>Given:</p><ul><li>The Merry Milk Makers’ daily requirement of milk</li><li>The cost per unit for milk from each farmer</li><li>The amount of milk available from each farmer</li></ul><p>calculate the minimum amount of money that Merry Milk Makers must spend to meet their daily need for milk.</p><p>Note: The total milk produced per day by the farmers will always be sufficient to meet the demands of the Merry Milk Makers even if the prices are high.</p><h2 id="PROGRAM-NAME-milk"><a href="#PROGRAM-NAME-milk" class="headerlink" title="PROGRAM NAME: milk"></a>PROGRAM NAME: milk</h2><h2 id="INPUT-FORMAT"><a href="#INPUT-FORMAT" class="headerlink" title="INPUT FORMAT"></a>INPUT FORMAT</h2><p>Line 1:</p><p>Two integers, N and M.<br>The first value, N, (0 &lt;&#x3D; N &lt;&#x3D; 2,000,000) is the amount of milk that Merry Milk Makers wants per day.<br>The second, M, (0 &lt;&#x3D; M &lt;&#x3D; 5,000) is the number of farmers that they may buy from.</p><p>Lines 2 through M+1:</p><p>The next M lines each contain two integers: Pi and Ai.<br>Pi (0 &lt;&#x3D; Pi &lt;&#x3D; 1,000) is price in cents that farmer i charges.<br>Ai (0 &lt;&#x3D; Ai &lt;&#x3D; 2,000,000) is the amount of milk that farmer i can sell to Merry Milk Makers per day.</p><h2 id="SAMPLE-INPUT-file-milk-in"><a href="#SAMPLE-INPUT-file-milk-in" class="headerlink" title="SAMPLE INPUT (file milk.in)"></a>SAMPLE INPUT (file milk.in)</h2><p>100 5<br>5 20<br>9 40<br>3 10<br>8 80<br>6 30</p><h2 id="INPUT-EXPLANATION"><a href="#INPUT-EXPLANATION" class="headerlink" title="INPUT EXPLANATION"></a>INPUT EXPLANATION</h2><p>100 5 – MMM wants 100 units of milk from 5 farmers<br>5 20 – Farmer 1 says, “I can sell you 20 units at 5 cents per unit”<br>9 40 etc.<br>3 10 – Farmer 3 says, “I can sell you 10 units at 3 cents per unit”<br>8 80 etc.<br>6 30 – Farmer 5 says, “I can sell you 30 units at 6 cents per unit”</p><h2 id="OUTPUT-FORMAT"><a href="#OUTPUT-FORMAT" class="headerlink" title="OUTPUT FORMAT"></a>OUTPUT FORMAT</h2><p>A single line with a single integer that is the minimum cost that Merry Milk Makers must pay for one day’s milk.</p><h2 id="SAMPLE-OUTPUT-file-milk-out"><a href="#SAMPLE-OUTPUT-file-milk-out" class="headerlink" title="SAMPLE OUTPUT (file milk.out)"></a>SAMPLE OUTPUT (file milk.out)</h2><p>630</p><h2 id="OUTPUT-EXPLANATION"><a href="#OUTPUT-EXPLANATION" class="headerlink" title="OUTPUT EXPLANATION"></a>OUTPUT EXPLANATION</h2><p>Here’s how the MMM company spent only 630 cents to purchase 100 units of milk:</p><p>Price<br>per unit</p><p>Units<br>available</p><p>Units<br>bought</p><p>Price *<br># units</p><p>Total cost</p><p>Notes</p><p>5</p><p>20</p><p>20</p><p>5*20</p><p>100</p><p>9</p><p>40</p><p>0</p><p>Bought no milk from farmer 2</p><p>3</p><p>10</p><p>10</p><p>3*10</p><p>30</p><p>8</p><p>80</p><p>40</p><p>8*40</p><p>320</p><p>Did not buy all 80 units!</p><p>6</p><p>30</p><p>30</p><p>6*30</p><p>180</p><p><strong>Total</strong></p><p>180</p><p><strong>100</strong></p><p><strong>630</strong></p><p>Cheapest total cost</p><h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><p>Easiest problem in usaco probably.</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>uncategorized</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>1.3 Palidromic Squares</title>
+    <link href="/2021/09/12/1-3-palidromic-squares/"/>
+    <url>/2021/09/12/1-3-palidromic-squares/</url>
+    
+    <content type="html"><![CDATA[<p><strong>Palindromic Squares</strong><br>Rob Kolstad</p><p>Palindromes are numbers that read the same forwards as backwards. The number 12321 is a typical palindrome.</p><p>Given a number base B (2 &lt;&#x3D; B &lt;&#x3D; 20 base 10), print all the integers N (1 &lt;&#x3D; N &lt;&#x3D; 300 base 10) such that the square of N is palindromic when expressed in base B; also print the value of that palindromic square. Use the letters ‘A’, ‘B’, and so on to represent the digits 10, 11, and so on.</p><p>Print both the number and its square in base B.</p><h2 id="PROGRAM-NAME-palsquare"><a href="#PROGRAM-NAME-palsquare" class="headerlink" title="PROGRAM NAME: palsquare"></a>PROGRAM NAME: palsquare</h2><h2 id="INPUT-FORMAT"><a href="#INPUT-FORMAT" class="headerlink" title="INPUT FORMAT"></a>INPUT FORMAT</h2><p>A single line with B, the base (specified in base 10).</p><h2 id="SAMPLE-INPUT-file-palsquare-in"><a href="#SAMPLE-INPUT-file-palsquare-in" class="headerlink" title="SAMPLE INPUT (file palsquare.in)"></a>SAMPLE INPUT (file palsquare.in)</h2><p>10</p><h2 id="OUTPUT-FORMAT"><a href="#OUTPUT-FORMAT" class="headerlink" title="OUTPUT FORMAT"></a>OUTPUT FORMAT</h2><p>Lines with two integers represented in base B. The first integer is the number whose square is palindromic; the second integer is the square itself. NOTE WELL THAT BOTH INTEGERS ARE IN BASE B!</p><h2 id="SAMPLE-OUTPUT-file-palsquare-out"><a href="#SAMPLE-OUTPUT-file-palsquare-out" class="headerlink" title="SAMPLE OUTPUT (file palsquare.out)"></a>SAMPLE OUTPUT (file palsquare.out)</h2><p>1 1<br>2 4<br>3 9<br>11 121<br>22 484<br>26 676<br>101 10201<br>111 12321<br>121 14641<br>202 40804<br>212 44944<br>264 69696</p><h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><p>There are two parts that consist of this question’s difficulty, the transformation between bases and judgment of whether a number is palindromic. The first part of this question can be done by a function and the second part actually can be done fairly easily in a somehow surprising way.</p><h2 id="Initiation"><a href="#Initiation" class="headerlink" title="Initiation"></a>Initiation</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;fstream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;stdio.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;string&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;cstring&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;stdlib.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;algorithm&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;cmath&gt;</span></span><br><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br></code></pre></td></tr></table></figure><p>(I think half of the header here is completely useless.)</p><h2 id="Transformation"><a href="#Transformation" class="headerlink" title="Transformation"></a>Transformation</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function">string <span class="hljs-title">transform</span><span class="hljs-params">(<span class="hljs-type">int</span> N,<span class="hljs-type">int</span> B)</span></span><br><span class="hljs-function"></span>&#123;<br>    string ans = <span class="hljs-string">&quot;&quot;</span>;<br>    <span class="hljs-keyword">while</span>(N != <span class="hljs-number">0</span>)&#123;<br>        <span class="hljs-type">int</span> t = N % B ;<br>        <span class="hljs-keyword">if</span>(t&gt;=<span class="hljs-number">0</span>&amp;&amp;t&lt;=<span class="hljs-number">9</span>) ans+=(t+<span class="hljs-string">&#x27;0&#x27;</span>);<br>        <span class="hljs-keyword">else</span> ans+=(t<span class="hljs-number">-10</span> + <span class="hljs-string">&#x27;A&#x27;</span>);<br>        N /= B;<br>    &#125;; <br>    <span class="hljs-built_in">reverse</span>(ans.<span class="hljs-built_in">begin</span>(),ans.<span class="hljs-built_in">end</span>());<br>    <span class="hljs-keyword">return</span> ans;<br>&#125;<br></code></pre></td></tr></table></figure><p>What this code does is transform a certain number into a certain base.-</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>USACO &amp;amp; Algorithm</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>C++</tag>
+      
+      <tag>USACO</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>1.3 Name That Number</title>
+    <link href="/2021/08/31/1-3-name-that-number/"/>
+    <url>/2021/08/31/1-3-name-that-number/</url>
+    
+    <content type="html"><![CDATA[<h2 id="1-3-Name-That-Number"><a href="#1-3-Name-That-Number" class="headerlink" title="1.3 Name That Number"></a>1.3 Name That Number</h2><p>Among the large Wisconsin cattle ranchers, it is customary to brand cows with serial numbers to please the Accounting Department. The cow hands don’t appreciate the advantage of this filing system, though, and wish to call the members of their herd by a pleasing name rather than saying, “C’mon, #4734, get along.”</p><p>Help the poor cowhands out by writing a program that will translate the brand serial number of a cow into possible names uniquely associated with that serial number. Since the cow hands all have cellular saddle phones these days, use the standard Touch-Tone(R) telephone keypad mapping to get from numbers to letters (except for “Q” and “Z”):</p><pre><code class="hljs">      2: A,B,C     5: J,K,L    8: T,U,V      3: D,E,F     6: M,N,O    9: W,X,Y      4: G,H,I     7: P,R,S</code></pre><p>Acceptable names for cattle are provided to you in a file named “dict.txt”, which contains a list of fewer than 5,000 acceptable cattle names (all letters capitalized). Take a cow’s brand number and report which of all the possible words to which that number maps are in the <a href="https://train.usaco.org/usaco/namenumdict.txt">given dictionary</a> which is supplied as dict.txt in the grading environment (and is sorted into ascending order).</p><p>For instance, the brand number 4734 produces all the following names:</p><p>GPDG GPDH GPDI GPEG GPEH GPEI GPFG GPFH GPFI GRDG GRDH GRDI<br>GREG GREH GREI GRFG GRFH GRFI GSDG GSDH GSDI GSEG GSEH GSEI<br>GSFG GSFH GSFI HPDG HPDH HPDI HPEG HPEH HPEI HPFG HPFH HPFI<br>HRDG HRDH HRDI HREG HREH HREI HRFG HRFH HRFI HSDG HSDH HSDI<br>HSEG HSEH HSEI HSFG HSFH HSFI IPDG IPDH IPDI IPEG IPEH IPEI<br>IPFG IPFH IPFI IRDG IRDH IRDI IREG IREH IREI IRFG IRFH IRFI<br>ISDG ISDH ISDI ISEG ISEH ISEI ISFG ISFH ISFI</p><p>As it happens, the only one of these 81 names that is in the list of valid names is “GREG”.</p><p>Write a program that is given the brand number of a cow and prints all the valid names that can be generated from that brand number or ``NONE’’ if there are no valid names. Serial numbers can be as many as a dozen digits long.</p><h2 id="PROGRAM-NAME-namenum"><a href="#PROGRAM-NAME-namenum" class="headerlink" title="PROGRAM NAME: namenum"></a>PROGRAM NAME: namenum</h2><h2 id="INPUT-FORMAT"><a href="#INPUT-FORMAT" class="headerlink" title="INPUT FORMAT"></a>INPUT FORMAT</h2><p>A single line with a number from 1 through 12 digits in length.</p><h2 id="SAMPLE-INPUT-file-namenum-in"><a href="#SAMPLE-INPUT-file-namenum-in" class="headerlink" title="SAMPLE INPUT (file namenum.in)"></a>SAMPLE INPUT (file namenum.in)</h2><p>4734</p><h2 id="OUTPUT-FORMAT"><a href="#OUTPUT-FORMAT" class="headerlink" title="OUTPUT FORMAT"></a>OUTPUT FORMAT</h2><p>A list of valid names that can be generated from the input, one per line, in ascending alphabetical order.</p><h2 id="SAMPLE-OUTPUT-file-namenum-out"><a href="#SAMPLE-OUTPUT-file-namenum-out" class="headerlink" title="SAMPLE OUTPUT (file namenum.out)"></a>SAMPLE OUTPUT (file namenum.out)</h2><p>GREG</p><h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><p>Now essentially this task has two ways of accomplishing it. The first way is to transform every string in the dictionary to its number forms, and then search for identical ones. But that sounds so weird, so I’m not gonna do that.</p><p>My strategy here is the second way, which is to browse through every string in the dictionary, transform them to numbers immediately, and then compare them to the input value.</p><p>There are several parts of this question that should be treated with extra care. Please pay attention to them if you want your code to get accepted the first time.</p><h2 id="Initiation-before-the-while"><a href="#Initiation-before-the-while" class="headerlink" title="Initiation(before the while)"></a>Initiation(before the while)</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;fstream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;stdio.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;string&gt;</span></span><br><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>&#123;<br><span class="hljs-type">char</span> name[<span class="hljs-number">13</span>], dict[<span class="hljs-number">14</span>];<br><span class="hljs-type">int</span> value[<span class="hljs-number">14</span>];<br><span class="hljs-type">bool</span> flag=<span class="hljs-literal">true</span>;<br><span class="hljs-type">bool</span> flag2 = <span class="hljs-literal">false</span>;<br><br><span class="hljs-function">ofstream <span class="hljs-title">fout</span><span class="hljs-params">(<span class="hljs-string">&quot;namenum.out&quot;</span>)</span></span>;<br>ifstream file;<br>file.<span class="hljs-built_in">open</span>(<span class="hljs-string">&quot;namenum.in&quot;</span>);<br>file&gt;&gt;name;<br><span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">13</span>; i++)<br>&#123;<br>name[i] = <span class="hljs-built_in">int</span>(name[i]);<br>&#125;<br>file.<span class="hljs-built_in">close</span>();<br>file.<span class="hljs-built_in">clear</span>();<br>file.<span class="hljs-built_in">open</span>(<span class="hljs-string">&quot;dict.txt&quot;</span>);<br></code></pre></td></tr></table></figure><p>name[13]: used to store the inputted value</p><p>dict[14]: used to store the current string in the loop</p><p>value[14]: used to store the transformed dict</p><p>flag: used to determine if the values are identical or not</p><p>flag2: for the abnormal value “NONE”</p><p>Here we need to access both files, so you need to close and clear the file in between the two file.open(). Should be a piece of cake here.</p><h2 id="Input"><a href="#Input" class="headerlink" title="Input"></a>Input</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">while</span>(!file.<span class="hljs-built_in">eof</span>())&#123;<br><span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">14</span>; i++)&#123;<br>dict[i] = <span class="hljs-string">&#x27;0&#x27;</span>;<br>value[i] = <span class="hljs-number">0</span>;<br>&#125;<br>file.<span class="hljs-built_in">getline</span>(dict, <span class="hljs-number">14</span>);<br><span class="hljs-keyword">if</span>(dict[<span class="hljs-number">0</span>] == <span class="hljs-string">&#x27; &#x27;</span> <span class="hljs-keyword">or</span> dict[<span class="hljs-number">0</span>] == <span class="hljs-string">&#x27;0&#x27;</span> <span class="hljs-keyword">or</span> dict[<span class="hljs-number">0</span>] == <span class="hljs-string">&#x27;/n&#x27;</span> <span class="hljs-keyword">or</span> !dict[<span class="hljs-number">0</span>])<br>&#123;<br><span class="hljs-keyword">break</span>;<br>&#125;<br></code></pre></td></tr></table></figure><p>Here we use the function getline to fetch every string from the dictionary. The other definitions and comparisons are precautions to make sure nothing goes wrong.</p><h2 id="Mapping"><a href="#Mapping" class="headerlink" title="Mapping"></a>Mapping</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">14</span>; i++)<br>&#123;<br>        <span class="hljs-keyword">if</span>(dict[i] == <span class="hljs-string">&#x27;0&#x27;</span>)&#123;<br><span class="hljs-keyword">break</span>;<br>&#125;<br><span class="hljs-keyword">switch</span>(dict[i])<br>&#123;<br><span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;A&#x27;</span>: <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;B&#x27;</span>: <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;C&#x27;</span>: value[i] = <span class="hljs-number">2</span>; <span class="hljs-keyword">break</span>;<br><span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;D&#x27;</span>: <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;E&#x27;</span>: <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;F&#x27;</span>: value[i] = <span class="hljs-number">3</span>; <span class="hljs-keyword">break</span>;<br><span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;G&#x27;</span>: <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;H&#x27;</span>: <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;I&#x27;</span>: value[i] = <span class="hljs-number">4</span>; <span class="hljs-keyword">break</span>;<br><span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;J&#x27;</span>: <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;K&#x27;</span>: <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;L&#x27;</span>: value[i] = <span class="hljs-number">5</span>; <span class="hljs-keyword">break</span>;<br><span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;M&#x27;</span>: <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;N&#x27;</span>: <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;O&#x27;</span>: value[i] = <span class="hljs-number">6</span>; <span class="hljs-keyword">break</span>;<br><span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;P&#x27;</span>: <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;R&#x27;</span>: <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;S&#x27;</span>: value[i] = <span class="hljs-number">7</span>; <span class="hljs-keyword">break</span>;<br><span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;T&#x27;</span>: <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;U&#x27;</span>: <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;V&#x27;</span>: value[i] = <span class="hljs-number">8</span>; <span class="hljs-keyword">break</span>;<br><span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;W&#x27;</span>: <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;X&#x27;</span>: <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;Y&#x27;</span>: value[i] = <span class="hljs-number">9</span>; <span class="hljs-keyword">break</span>;<br><span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;Q&#x27;</span>: <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;Z&#x27;</span>: value[i] = <span class="hljs-number">1</span>; <span class="hljs-keyword">break</span>;<br>        &#125;<br>&#125;<br></code></pre></td></tr></table></figure><p>Here we officially map down the value according to the dict. The ‘Q’ and ‘Z’ are abnormality values so we don’t concern them.</p><h2 id="Comparison"><a href="#Comparison" class="headerlink" title="Comparison"></a>Comparison</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs cpp">flag = <span class="hljs-literal">true</span>;<br><span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">14</span>;i++)<br>&#123;<br><span class="hljs-keyword">if</span>(value[i] == <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> <span class="hljs-built_in">int</span>(name[i]<span class="hljs-number">-48</span>) == <span class="hljs-number">-48</span>)<br>&#123;<br>        <span class="hljs-keyword">break</span>;<br>&#125;<br><span class="hljs-keyword">if</span>(<span class="hljs-built_in">int</span>(value[i]) != <span class="hljs-built_in">int</span>(name[i]<span class="hljs-number">-48</span>) <span class="hljs-keyword">or</span> value[i] == <span class="hljs-number">1</span>)&#123;<br>flag=<span class="hljs-literal">false</span>;<br><span class="hljs-keyword">break</span>;<br>&#125;<br>&#125;<br></code></pre></td></tr></table></figure><p>In case you did not notice, the -48 is used to transform the char into an integer value.</p><h2 id="Output"><a href="#Output" class="headerlink" title="Output"></a>Output</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">if</span>(flag)<br>&#123;<br>flag2=<span class="hljs-literal">true</span>;<br>fout&lt;&lt;dict&lt;&lt;endl;<br>&#125;<br>&#125;<br><span class="hljs-keyword">if</span>(!flag2)<br>&#123;<br>        fout&lt;&lt;<span class="hljs-string">&quot;NONE&quot;</span>&lt;&lt;endl;<br>&#125;<br>&#125;<br></code></pre></td></tr></table></figure>]]></content>
+    
+    
+    <categories>
+      
+      <category>USACO &amp;amp; Algorithm</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>kratos-main</title>
+    <link href="/2021/08/26/kratos-main/"/>
+    <url>/2021/08/26/kratos-main/</url>
+    
+    <content type="html"><![CDATA[<p>.k-main .details .article .header .meta { color: #5a5a5a; font-size: 12px; cursor: default; } .k-main .details .article .content code { margin: 0 3px; padding: 2px 4px; border-radius: 4px; background-color: #eff0f1; color: #333; font-size: 18px; word-break: inherit; } .k-header .banner .content .introduce .title { margin-top: -18px; margin-bottom: 5px; font-size: 35px; } .k-header .banner .content .introduce .mate { font-size: 25px; } .k-main .details .comments .title { margin-bottom: 0; padding: 16px 0; border-bottom: 1px solid #f0f0f0; font-size: 19px; cursor: default; } .k-main .board .article-panel .a-post .header .title a { color: #333; font-size: 22px; } .k-main .board .article-panel .a-post .content p { margin-bottom: 0; font-size: 17px; line-height: 24px; } .k-header .banner .content .introduce .mate { font-size: 18px; } .k-main .board .article-panel .a-card .i-card-hot { color: #293293; font-size: 40px; } &#x2F;*下面的是点赞设置*&#x2F; .k-main .details .toolbar .share .btn-thumbs { padding: 3px; border: 1px solid #00a2ff; border-radius: 0; color: #00a2ff; } .k-main .details .toolbar .share .btn-thumbs:hover{ padding: 3px; border: 1px solid #00a2ff; border-radius: 0; color: #FFFFFF; background-color: #00a2ff; } .k-main .details .toolbar .share .btn-thumbs:focus, .k-main .details .toolbar .share .btn-thumbs:hover { border-color: #00a2ff; background-color: #00a2ff; -webkit-box-shadow: none; -moz-box-shadow: none; box-shadow: none; color: #fff; } &#x2F;*下面的是标签设置*&#x2F; .k-main .details .article .footer .tags a { margin: 0 5px 0 0; padding: 2px 7px; background-color: #a9a9a9; color: #fff; font-size: 13px; border-radius: 6px; } &#x2F;* 暂时性禁用，有bug .navbar .container, .navbar .container-fluid, .navbar .container-lg, .navbar .container-md, .navbar .container-sm, .navbar .container-xl { margin-top: -30px; }*&#x2F; select{margin-left: 5px;} .k-nav .navbar-brand h1{ font-weight: 500; } p{font-weight:500; font-size:20px; font-family: ‘Source Serif Pro’, serif; font-style: normal;} .title{font-weight:500;} .mate{font-weight:500;}</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>uncategorized</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>一行代码能做什么？</title>
+    <link href="/2021/08/24/%E4%B8%80%E8%A1%8C%E4%BB%A3%E7%A0%81%E8%83%BD%E5%81%9A%E4%BB%80%E4%B9%88%EF%BC%9F/"/>
+    <url>/2021/08/24/%E4%B8%80%E8%A1%8C%E4%BB%A3%E7%A0%81%E8%83%BD%E5%81%9A%E4%BB%80%E4%B9%88%EF%BC%9F/</url>
+    
+    <content type="html"><![CDATA[<p>最开始，我在知乎上看到了这个问题，并找到了一个特别值得一提也很炫酷的答案。</p><p>不过在我提到这个答案之前，我们先设置一个悬念，先转而来看看下面这行代码…</p><h1 id="试试编辑这句文字"><a href="#试试编辑这句文字" class="headerlink" title="试试编辑这句文字"></a>试试编辑这句文字</h1><p>看到了吗？上面的那句话可以自由编辑。这是因为我们已经更改了上面h1标记的一个属性，即“contentEditable”属性。默认情况下，此属性设置为false，但当此属性更改为true时，它将允许用户<strong>仅限视觉上</strong>编辑内容。</p><p>现在您可能会问，我们要如何编辑来自外部网站的内容属性？事实证明，浏览器提供了一个控制台，允许我们输入命令来改变网页中的元素和属性。只需按F12键，控制台就会弹出。<br><a href="http://vinceli.tech/wp-content/uploads/2021/08/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20210821163932.png"><img src="http://vinceli.tech/wp-content/uploads/2021/08/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20210821163932.png" alt="An image showing the console"></a><br>访问控制台后，只需将这行代码粘贴到控制台中，然后按“回车”。<br><strong>document.body.contentEditable &#x3D; “true”</strong><br>现在，尝试去编辑网站上的任何内容。你会大吃一惊的。</p><hr><p>这种方法仍然有很大的局限性，但这应该可以允许你进行大部分的编辑操作了（例如把自己的成绩改成完美的100分，或者什么分都可以）</p><p><a href="http://vinceli.tech/wp-content/uploads/2021/08/df5115ef8431c89cea0ccbfbfaeac9b.png"><img src="http://vinceli.tech/wp-content/uploads/2021/08/df5115ef8431c89cea0ccbfbfaeac9b.png"></a></p><p>现在，您可能会发现深国交的IT还是做了一些防范工作的，因为按F12键时控制台可能完全不会弹出来。如果你对网页已经有更深层次的了解的话，您可能会在源代码中找到以下代码：</p><p><a href="http://vinceli.tech/wp-content/uploads/2021/08/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20210821170115.png"><img src="http://vinceli.tech/wp-content/uploads/2021/08/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20210821170115.png"></a></p><p>国交真是狡猾。 不过自然也不是没办法突破，直接从浏览器的设置打开开发者工具就可以。</p><p><a href="http://vinceli.tech/wp-content/uploads/2021/08/console.png"><img src="http://vinceli.tech/wp-content/uploads/2021/08/console-300x148.png"></a></p><p>如果你发现你的学校甚至更狡猾了一点，以至于网页上的文字用这种方法都无法编辑的话，那只有把网站下载下来才能在本地自由编辑了。<br><a href="http://vinceli.tech/wp-content/uploads/2021/08/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20210823200648-1.png"><img src="http://vinceli.tech/wp-content/uploads/2021/08/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20210823200648-1.png"></a><br>Also I should probably warn u, <strong>NONE OF THIS WILL ACTUALLY CHANGE YOUR GRADES ON THE SERVER. ITS JUST A VISUAL EFFECT. IF I CAN EDIT ANY OF THIS I WILL BE LONG GONE AWAY IN HAWAII SIPPING COCONUT JUICE SO PLS GROW UP</strong></p><hr><p>Happy day everyone.</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>网页设计</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>What can one line of code do?</title>
+    <link href="/2021/08/18/what-can-one-line-of-code-do/"/>
+    <url>/2021/08/18/what-can-one-line-of-code-do/</url>
+    
+    <content type="html"><![CDATA[<p>Originally I saw this question on Zhihu(which is basically a Chinese version of Quora) and found one answer that is particularly worth mentioning. But before I get to that, I want to create a cliffhanger and ask you to check out the following sentence:</p><h1 id="TRY-TO-EDIT-THIS"><a href="#TRY-TO-EDIT-THIS" class="headerlink" title="TRY TO EDIT THIS"></a>TRY TO EDIT THIS</h1><p>See? The content above me can be edited freely. This is because we have changed an attribute of the h1 tag above, namely the “contentEditable” attribute. This attribute in default is set to false, but when this attribute is changed to true, it will allow the user to edit the content <strong>visually only.</strong> Now you may ask, how can we edit the attribute of the content that comes from an external website? Well, turns out the browser provides a console that allows us to input commands to alter the elements and the attributes in the web page. Just simply press F12 for the console to pop out. <a href="http://vinceli.tech/wp-content/uploads/2021/08/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20210821163932.png"><img src="http://vinceli.tech/wp-content/uploads/2021/08/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20210821163932.png" alt="An image showing the console"></a> Once you have accessed the console, just simply paste this line of code inside it and press “Enter. ** document.body.contentEditable &#x3D; “true” ** Now, try to edit anything on the website, and you’ll be surprised.</p><hr><p>There are still limitations to this method, but this should be good enough to change your assessment scores to perfect 100s. <a href="http://vinceli.tech/wp-content/uploads/2021/08/df5115ef8431c89cea0ccbfbfaeac9b.png"><img src="http://vinceli.tech/wp-content/uploads/2021/08/df5115ef8431c89cea0ccbfbfaeac9b.png"></a> Now sometimes you may find the school is a little weasel, as you might fail when pressing F12, and you find these code in the source: <a href="http://vinceli.tech/wp-content/uploads/2021/08/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20210821170115.png"><img src="http://vinceli.tech/wp-content/uploads/2021/08/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20210821170115.png"></a> Weasel SCIE. But there are still ways to get around it. Just simply go from your web browser’s settings into the dev tools. <a href="http://vinceli.tech/wp-content/uploads/2021/08/console.png"><img src="http://vinceli.tech/wp-content/uploads/2021/08/console-300x148.png"></a> If you have found your school to be even more weasel and made the text uneditable, welps, but there is still a way to solve this problem. Just simply download the website and edit it offline. <a href="http://vinceli.tech/wp-content/uploads/2021/08/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20210823200648-1.png"><img src="http://vinceli.tech/wp-content/uploads/2021/08/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20210823200648-1.png"></a> Also I should probably warn u, ** NONE OF THIS WILL ACTUALLY CHANGE YOUR GRADES ON THE SERVER. ITS JUST A VISUAL EFFECT. IF I CAN EDIT ANY OF THIS I WILL BE LONG GONE AWAY IN HAWAII SIPPING COCONUT JUICE SO PLS GROW UP**</p><hr><p>Happy day everyone.</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>Website Design</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>语言</title>
+    <link href="/2021/08/17/languages/"/>
+    <url>/2021/08/17/languages/</url>
+    
+    <content type="html"><![CDATA[]]></content>
+    
+    
+    <categories>
+      
+      <category>uncategorized</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>polylang_mo_3</title>
+    <link href="/2021/08/17/polylang-mo-3/"/>
+    <url>/2021/08/17/polylang-mo-3/</url>
+    
+    <content type="html"><![CDATA[]]></content>
+    
+    
+    <categories>
+      
+      <category>uncategorized</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>polylang_mo_5</title>
+    <link href="/2021/08/17/polylang-mo-5/"/>
+    <url>/2021/08/17/polylang-mo-5/</url>
+    
+    <content type="html"><![CDATA[]]></content>
+    
+    
+    <categories>
+      
+      <category>uncategorized</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
   
 </search>

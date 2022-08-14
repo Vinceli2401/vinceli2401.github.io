@@ -1,0 +1,632 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="It’s barely new anymore since it’s been out for more than one month and someone as blind as me just couldn’t notice the new tab. Oh well. [h2title]How to access this tab[&#x2F;h2title] Literally, just">
+<meta property="og:type" content="article">
+<meta property="og:title" content="The new CSS Overview tab on Chrome(Edge)">
+<meta property="og:url" content="http://example.com/2021/12/06/the-new-css-overview-tab/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="It’s barely new anymore since it’s been out for more than one month and someone as blind as me just couldn’t notice the new tab. Oh well. [h2title]How to access this tab[&#x2F;h2title] Literally, just">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://vinceli.tech/wp-content/uploads/2021/12/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211206201414-1024x534.png">
+<meta property="og:image" content="https://vinceli.tech/wp-content/uploads/2021/12/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211206201341-1024x481.png">
+<meta property="og:image" content="https://vinceli.tech/wp-content/uploads/2021/12/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211206203553-1024x143.png">
+<meta property="og:image" content="https://vinceli.tech/wp-content/uploads/2021/12/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211206203840.png">
+<meta property="og:image" content="https://vinceli.tech/wp-content/uploads/2021/12/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211206210418.png">
+<meta property="og:image" content="https://vinceli.tech/wp-content/uploads/2021/12/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211206204519-1024x481.png">
+<meta property="og:image" content="https://vinceli.tech/wp-content/uploads/2021/12/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211206205925.png">
+<meta property="og:image" content="https://vinceli.tech/wp-content/uploads/2021/12/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211206210159.png">
+<meta property="og:image" content="https://vinceli.tech/wp-content/uploads/2021/12/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211206201341-1024x481.png">
+<meta property="og:image" content="https://vinceli.tech/wp-content/uploads/2021/12/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211206210840-1024x374.png">
+<meta property="og:image" content="https://vinceli.tech/wp-content/uploads/2021/12/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211206211102.png">
+<meta property="og:image" content="https://vinceli.tech/wp-content/uploads/2021/12/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211206211226-1024x74.png">
+<meta property="og:image" content="https://vinceli.tech/wp-content/uploads/2021/12/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211206211705.png">
+<meta property="article:published_time" content="2021-12-06T12:25:18.000Z">
+<meta property="article:modified_time" content="2022-08-14T04:53:02.372Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://vinceli.tech/wp-content/uploads/2021/12/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211206201414-1024x534.png">
+  
+  
+  
+  <title>The new CSS Overview tab on Chrome(Edge) - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                Categories
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                Tags
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="The new CSS Overview tab on Chrome(Edge)"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2021-12-06 20:25" pubdate>
+          December 6, 2021 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.8k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          24 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">The new CSS Overview tab on Chrome(Edge)</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>It’s barely new anymore since it’s been out for more than one month and someone as blind as me just couldn’t notice the new tab. Oh well. [h2title]How to access this tab[&#x2F;h2title] Literally, just press f12 on your browser and find your tab right away. I think my chrome is not updated so I’m gonna use edge here. <a target="_blank" rel="noopener" href="https://vinceli.tech/wp-content/uploads/2021/12/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211206201414.png"><img src="https://vinceli.tech/wp-content/uploads/2021/12/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211206201414-1024x534.png" srcset="/img/loading.gif" lazyload></a> [h2title]How to use it[&#x2F;h2title] Let’s say you’re a talented web designer but with absolute zero art taste. You decide to design a little functional website for your entire school to use. And it looks a bit like this…: <a target="_blank" rel="noopener" href="https://vinceli.tech/wp-content/uploads/2021/12/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211206201341.png"><img src="https://vinceli.tech/wp-content/uploads/2021/12/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211206201341-1024x481.png" srcset="/img/loading.gif" lazyload></a> I know what you guys are thinking. This is a terrible color combination! But lucky for you, with your IMPECCABLE color palette, you can’t even see your own mistakes. Now the CSS Overview can help you with this problem!(</p>
+<p>This tab consists of five parts:</p>
+<p><a target="_blank" rel="noopener" href="https://vinceli.tech/wp-content/uploads/2021/12/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211206203553.png"><img src="https://vinceli.tech/wp-content/uploads/2021/12/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211206203553-1024x143.png" srcset="/img/loading.gif" lazyload></a> <strong>Overview summary:</strong> This provides information for the total amount of elements, selectors, and style rules on your page. Not sure why you absolutely need those statistics though…</p>
+<hr>
+<p><a target="_blank" rel="noopener" href="https://vinceli.tech/wp-content/uploads/2021/12/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211206203840.png"><img src="https://vinceli.tech/wp-content/uploads/2021/12/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211206203840.png" srcset="/img/loading.gif" lazyload></a> <strong>Colors:</strong> This tab shows you detailed information on all the colors on your website, including background colors and text colors. This tab also suggests improvements on the contrasting background color and text color, so you can adjust your palette to make your website more human-friendly. When you click on the colors, the browser will show you a list of elements that all use this color. <a target="_blank" rel="noopener" href="https://vinceli.tech/wp-content/uploads/2021/12/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211206210418.png"><img src="https://vinceli.tech/wp-content/uploads/2021/12/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211206210418.png" srcset="/img/loading.gif" lazyload></a> Also, I investigated something I found pretty intriguing. Notice here we add a completely useless cyan box. <a target="_blank" rel="noopener" href="https://vinceli.tech/wp-content/uploads/2021/12/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211206204519.png"> <img src="https://vinceli.tech/wp-content/uploads/2021/12/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211206204519-1024x481.png" srcset="/img/loading.gif" lazyload></a> If we apply this box with a “display: none;”, the CSS overview would not take this element into the consideration of colors. <a target="_blank" rel="noopener" href="https://vinceli.tech/wp-content/uploads/2021/12/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211206205925.png"><img src="https://vinceli.tech/wp-content/uploads/2021/12/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211206205925.png" srcset="/img/loading.gif" lazyload></a> However, if we apply an “opacity: 0;” or “visibility: none;” onto the box, the CSS overview actually considers the box as a color, even though it’s not shown at all. <a target="_blank" rel="noopener" href="https://vinceli.tech/wp-content/uploads/2021/12/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211206210159.png"><img src="https://vinceli.tech/wp-content/uploads/2021/12/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211206210159.png" srcset="/img/loading.gif" lazyload></a> Please notice that the website still looks like this: <a target="_blank" rel="noopener" href="https://vinceli.tech/wp-content/uploads/2021/12/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211206201341.png"><img src="https://vinceli.tech/wp-content/uploads/2021/12/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211206201341-1024x481.png" srcset="/img/loading.gif" lazyload></a>I know probably no one really cares about this cute little interaction, but this still demonstrates some difference between the realization of different methods in CSS, though they all achieve the same effects.</p>
+<hr>
+<p><a target="_blank" rel="noopener" href="https://vinceli.tech/wp-content/uploads/2021/12/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211206210840.png"><img src="https://vinceli.tech/wp-content/uploads/2021/12/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211206210840-1024x374.png" srcset="/img/loading.gif" lazyload></a><strong>Font info:</strong> This is kind of similar to the colors tab, as it lists all the fonts and their corresponding attributes on the page. You can also click on the occurrences and investigate which element is using the font. <a target="_blank" rel="noopener" href="https://vinceli.tech/wp-content/uploads/2021/12/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211206211102.png"><img src="https://vinceli.tech/wp-content/uploads/2021/12/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211206211102.png" srcset="/img/loading.gif" lazyload></a></p>
+<hr>
+<p><a target="_blank" rel="noopener" href="https://vinceli.tech/wp-content/uploads/2021/12/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211206211226.png"><img src="https://vinceli.tech/wp-content/uploads/2021/12/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211206211226-1024x74.png" srcset="/img/loading.gif" lazyload></a> <strong>Unused declarations:</strong> This tab lists all the style rules that actually have no use at all or contradict with other style rules on an element. An independent web designer that starts their website from scratch may not notice this as much as an error, but in integrated platforms (like WordPress) these mistakes may occur. Again, you can click on the occurrences and find the location of your errors…</p>
+<hr>
+<p><a target="_blank" rel="noopener" href="https://vinceli.tech/wp-content/uploads/2021/12/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211206211705.png"><img src="https://vinceli.tech/wp-content/uploads/2021/12/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20211206211705.png" srcset="/img/loading.gif" lazyload></a> <strong>Media queries:</strong> Lastly, the overview also offers a tab that lists all media queries descending from the highest occurrences to the least. Most of them may be from other scripts, such as bootstraps, or other stylesheets.</p>
+<hr>
+<p>[h2title]Hope for a better future[&#x2F;h2title] This function is actually only in preview, so it may not be sufficient enough to meet the demands of some front-end developers. For example, a function I would love is to change the color of all the elements with the same color into a different color, which can instantly change the style of the entire web page. Some recommended color schemes can also be listed in this tab so web designers with zero artistic instincts (such as me, especially me) can also design a website that’s suitable for humans to visit, not aliens.</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Website-Design/" class="category-chain-item">Website Design</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>The new CSS Overview tab on Chrome(Edge)</div>
+      <div>http://example.com/2021/12/06/the-new-css-overview-tab/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>December 6, 2021</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>Licensed under</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/01/02/wp-global-styles-kratos-main/" title="Custom Styles">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Custom Styles</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/11/19/opening-your-own-minecraft-server-with-vultr-vps/" title="Opening your own minecraft server with Vultr VPS">
+                        <span class="hidden-mobile">Opening your own minecraft server with Vultr VPS</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;Table of Contents</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
