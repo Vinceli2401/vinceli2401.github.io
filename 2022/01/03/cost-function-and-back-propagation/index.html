@@ -7,8 +7,8 @@
 
 <head>
   <meta charset="UTF-8">
-  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
-  <link rel="icon" href="/img/fluid.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.ico">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
@@ -16,15 +16,15 @@
   <meta name="author" content="Vince Li">
   <meta name="keywords" content="">
   
-    <meta name="description" content="My GPA is getting destroyed so I escape reality by writing neural network notes. G o o d   f o r   m e [h2title]Cost function for neural networks[&#x2F;h2title] Firstly let’s recap the regularized cos">
+    <meta name="description" content="My GPA is getting destroyed so I escape reality by writing neural network notes. A-w-e-s-o-m-e Cost function for neural networksFirstly let’s recap the regularized cost function of logistic regression">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Cost function and back propagation">
 <meta property="og:url" content="http://example.com/2022/01/03/cost-function-and-back-propagation/index.html">
 <meta property="og:site_name" content="Velony">
-<meta property="og:description" content="My GPA is getting destroyed so I escape reality by writing neural network notes. G o o d   f o r   m e [h2title]Cost function for neural networks[&#x2F;h2title] Firstly let’s recap the regularized cos">
+<meta property="og:description" content="My GPA is getting destroyed so I escape reality by writing neural network notes. A-w-e-s-o-m-e Cost function for neural networksFirstly let’s recap the regularized cost function of logistic regression">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-01-03T11:07:45.000Z">
-<meta property="article:modified_time" content="2022-08-14T06:14:37.688Z">
+<meta property="article:modified_time" content="2022-08-21T04:08:51.868Z">
 <meta property="article:author" content="Vince Li">
 <meta name="twitter:card" content="summary_large_image">
   
@@ -260,15 +260,16 @@
             
               <div class="markdown-body">
                 
-                <p>My GPA is getting destroyed so I escape reality by writing neural network notes. G o o d   f o r   m e [h2title]Cost function for neural networks[&#x2F;h2title]</p>
-<p>Firstly let’s recap the regularized cost function of logistic regression, which we have revised multiple times.</p>
+                <p>My GPA is getting destroyed so I escape reality by writing neural network notes. A-w-e-s-o-m-e</p>
+<h1 id="Cost-function-for-neural-networks"><a href="#Cost-function-for-neural-networks" class="headerlink" title="Cost function for neural networks"></a>Cost function for neural networks</h1><p>Firstly let’s recap the regularized cost function of logistic regression, which we have revised multiple times.</p>
 <p>$$J(\theta) &#x3D; -\frac{1}{m} \sum_{i&#x3D;1}^m\cdot \left[y^{(i)}\log(h_\theta(x^{(i)}))+(1-y^{(i)})\log(1-\theta(x^{(i)})) \right ]+ \frac\lambda {2m}\sum_{j&#x3D;1}^{n} \theta^2_j$$</p>
 <p>The neural network cost function is mostly similar, being <strong>slightly more complicated.</strong></p>
 <p>$$ J(\Theta)&#x3D;-\frac{1}{m} \sum_{i&#x3D;1}^{m} \sum_{k&#x3D;1}^{K}\left[y_{k}^{(i)} \log \left(\left(h_{\Theta}\left(x^{(i)}\right)\right)_{k}\right)+\left(1-y_{k}^{(i)}\right) \log \left(1-\left(h_{\Theta}\left(x^{(i)}\right)\right)_{k}\right)\right]+\frac{\lambda}{2 m} \sum_{l&#x3D;1}^{L-1} \sum_{i&#x3D;1}^{s_l} \sum_{j&#x3D;1}^{s_{l+1}}\left(\Theta_{j, i}^{(l)}\right)^{2} $$ I know what are you guys thinking. This is only slightly complicated? Actually, if you understand the model of a neural network, you should be able to understand this. I just realized I forgot to introduce the new variables. My bad.</p>
 <p>k: stands for the total number of output units in the neural network.</p>
 <p>$s_l$: stands for the number of nodes in a layer</p>
 <p>l: stands for the number of layers</p>
-<p>As now we’re dealing with the entire neural network here, we need to iterate through every output unit to calculate the cost of the entire network. Thus in the first part of the cost function, we introduce the double sum $\sum_{k&#x3D;1}^{K}$ for this particular purpose. For the regularization component, here we utilize a triple sum(what). As we talked about before in the neural network model, the size of the $\theta$ matrix is equal to the number of nodes in the next layer * the number of nodes in this layer. We iterate the matrix two-dimensionally and square every term and add it to our cost. We need to do this for every layer so this is what the $\sum_{l&#x3D;1}^{L-1}$ is for. [h2title]Back propagation[&#x2F;h2title] We combine forward propagation and backpropagation to minimize the cost of our neural network. Firstly, we complete forward propagation using the train sets (or the training examples) and derive the output nodes. This process will derive the values for all the activation units in the neural network. The next thing we do is to derive $\delta$ . This is a new concept, as it represents the error values in this neural network. You might suggest that this is already represented by the cost function, but actually, the error values are similar to the derivatives of the cost functions. We’ll introduce this more later on. Anyways, the formula to calculate $\delta$ when it’s at the output layer is $\delta^{(L)}&#x3D;a^{(L)}-y^{(t)}$. This is pretty easy to understand as this just calculates the difference between the activation values at the output layer and the actual value in the training examples. Notice how this is a vectorized representation so the $\delta^{(L)}$ is a vector. Now here comes the interesting part. We use the $\delta^{(L)}$ at the output layer to calculate the $\delta^{(L-1)}$ and its former terms by the formula below. $$ \delta^{(l)}&#x3D;\left(\left(\Theta^{(l)}\right)^{T} \delta^{(l+1)}\right) \cdot * g’(z{(l)}) $$ To be honest this is very perplexing. What we’re actually doing here is to multiply the next layer’s error values with the theta of this layer’s. We then do an element-wise multiplication with the derivatives of the activation function (sigmoid function here is) with the input values of this layer. The derivatives here can be represented also through $a^{(l)} \cdot *(1-a^{(l)})$, so we can rewrite the formula into… $$ \delta^{(l)}&#x3D;\left(\left(\Theta^{(l)}\right)^{T} \delta^{(l+1)}\right) \cdot * a^{(l)} \cdot *\left(1-a^{(l)}\right) $$ Through this function, we can derive all the error values of the neural network up to $\delta^{(2)}$. We don’t need to compute $\delta^{(1)}$ because the error values are not needed in the input layer. After we compute the error values for <strong>one training example,</strong> we then use an accumulator matrix to add up the error values. We call this matrix $\Delta$. The vectorized approach of the accumulation function is $\Delta^{(l)}:&#x3D;\Delta^{(l)}+\delta^{(l+1)}\left(a^{(l)}\right)^{T}$. We then repeat the process for every training example, for a total of m times. After this, we can finally deduce the partial derivatives of the cost function by the last formula below.</p>
+<p>As now we’re dealing with the entire neural network here, we need to iterate through every output unit to calculate the cost of the entire network. Thus in the first part of the cost function, we introduce the double sum $\sum_{k&#x3D;1}^{K}$ for this particular purpose. For the regularization component, here we utilize a triple sum(what). As we talked about before in the neural network model, the size of the $\theta$ matrix is equal to the number of nodes in the next layer * the number of nodes in this layer. We iterate the matrix two-dimensionally and square every term and add it to our cost. We need to do this for every layer so this is what the $\sum_{l&#x3D;1}^{L-1}$ is for. </p>
+<h1 id="Back-propagation"><a href="#Back-propagation" class="headerlink" title="Back propagation"></a>Back propagation</h1><p>We combine forward propagation and backpropagation to minimize the cost of our neural network. Firstly, we complete forward propagation using the train sets (or the training examples) and derive the output nodes. This process will derive the values for all the activation units in the neural network. The next thing we do is to derive $\delta$ . This is a new concept, as it represents the error values in this neural network. You might suggest that this is already represented by the cost function, but actually, the error values are similar to the derivatives of the cost functions. We’ll introduce this more later on. Anyways, the formula to calculate $\delta$ when it’s at the output layer is $\delta^{(L)}&#x3D;a^{(L)}-y^{(t)}$. This is pretty easy to understand as this just calculates the difference between the activation values at the output layer and the actual value in the training examples. Notice how this is a vectorized representation so the $\delta^{(L)}$ is a vector. Now here comes the interesting part. We use the $\delta^{(L)}$ at the output layer to calculate the $\delta^{(L-1)}$ and its former terms by the formula below. $$ \delta^{(l)}&#x3D;\left(\left(\Theta^{(l)}\right)^{T} \delta^{(l+1)}\right) \cdot * g’(z{(l)}) $$ To be honest this is very perplexing. What we’re actually doing here is to multiply the next layer’s error values with the theta of this layer’s. We then do an element-wise multiplication with the derivatives of the activation function (sigmoid function here is) with the input values of this layer. The derivatives here can be represented also through $a^{(l)} \cdot *(1-a^{(l)})$, so we can rewrite the formula into… $$ \delta^{(l)}&#x3D;\left(\left(\Theta^{(l)}\right)^{T} \delta^{(l+1)}\right) \cdot * a^{(l)} \cdot *\left(1-a^{(l)}\right) $$ Through this function, we can derive all the error values of the neural network up to $\delta^{(2)}$. We don’t need to compute $\delta^{(1)}$ because the error values are not needed in the input layer. After we compute the error values for <strong>one training example,</strong> we then use an accumulator matrix to add up the error values. We call this matrix $\Delta$. The vectorized approach of the accumulation function is $\Delta^{(l)}:&#x3D;\Delta^{(l)}+\delta^{(l+1)}\left(a^{(l)}\right)^{T}$. We then repeat the process for every training example, for a total of m times. After this, we can finally deduce the partial derivatives of the cost function by the last formula below.</p>
 <p>$\begin{aligned} D_{i, j}^{(l)} &amp;:&#x3D;\frac{1}{m}\left(\Delta_{i, j}^{(l)}+\lambda \Theta_{i, j}^{(l)}\right), \text { If } \mathrm{j} \neq 0 . \\ D_{i, j}^{(l)} &amp;:&#x3D;\frac{1}{m} \Delta_{i, j}^{(l)} \text { If } \mathrm{j}&#x3D;0 \end{aligned}$</p>
 <p>The last process here is to divide the $\Theta$ matrix by m so it computes the average for all the error values. The regularization term here may also seem very familiar to you, and as for always, we don’t consider the part when j &#x3D; 0. To be honest, the backpropagation algorithm is insanely challenging to understand. Try your best at following the steps of backpropagation and maybe you can gain a deeper understanding of the concept here. In the next article perhaps I will cover some more practical instructions on actually realizing the backpropagation in Matlab, but that’s only the luckiest circumstance if I remember this blog at all.</p>
 
@@ -352,9 +353,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2022/01/22/matlab-tricks-on-realizing-back-propagation/" title="Matlab tricks on realizing back propagation">
+                      <a href="/2022/02/03/bias-variance/" title="Bias &amp; Variance">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Matlab tricks on realizing back propagation</span>
+                        <span class="hidden-mobile">Bias &amp; Variance</span>
                         <span class="visible-mobile">Previous</span>
                       </a>
                     
